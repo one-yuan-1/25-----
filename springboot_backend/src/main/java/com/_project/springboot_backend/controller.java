@@ -16,6 +16,14 @@ public class Controller {
 	public DtoRes getMethodName(@RequestParam String param) {
 		return service.login();
 	}
+	//处理post注册请求
+	@PostMapping("")
+	public DtoRes register(
+		@RequestParam String username, 
+		@RequestParam String password
+	) {
+		return service.register(username,password);
+	}
 
 
 }
