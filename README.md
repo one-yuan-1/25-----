@@ -20,4 +20,7 @@
         mvn clean package
     运行(初次会自动下载依赖)：
         cd springboot_backend
-        mvn spring-boot:run
+        mvn spring-boot:run     
+
+
+        
