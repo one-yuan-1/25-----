@@ -13,11 +13,14 @@
         cd vue_frontend（如果已经在这个路径下的话就不用切换路径了）
         npm run dev
 后端(我已经创建完了，你们不用再创建了)：
-    springboot3.5.10，mysql，jdk17，maven 3.9.11
+    springboot3.5.10，mysql，jdk17，maven 3.9.11，数据库mysql
     构建springboot：
         https://start.spring.io/选好下载压缩包解压
     写完后重新打包：
         mvn clean package
     运行(初次会自动下载依赖)：
         cd springboot_backend
-        mvn spring-boot:run
+        mvn spring-boot:run     
+
+
+        
