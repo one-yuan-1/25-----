@@ -42,7 +42,7 @@
       <div class="extra-links">
         <a href="#" class="link">忘记密码？</a>
         <span> | </span>
-        <a href="#" class="link">注册账号</a>
+        <a href="#" class="link" @click="register">注册账号</a>
       </div>
     </div>
 
@@ -79,20 +79,42 @@ const handleLogin = (e) => {
 //点击登录后触发的函数
 function login(){
     //给后端发请求
-  // 3. 构建表单格式参数（适配后端的@RequestParam）
+  //构建表单格式参数（适配后端的@RequestParam）
   const params = new URLSearchParams();
   let input_username = document.getElementById("username").value;
   let input_password = document.getElementById("password").value;
   params.append("username", input_username); // 参数名和后端一致
   params.append("password", input_password);
 
-  console.log("用户名:", input_username);
-  console.log("密码:", input_password);
+  //console.log("用户名:", input_username);
+  //console.log("密码:", input_password);
   axios.post("/api/login", params).then(response => {
               console.log(response.data);
-            }).catch(error => {
-              console.error("登录请求失败:", error);
-            });
+              if(response.data.code==0){
+                alert("登录失败:"+response.data.error_msg);
+              }
+              else{
+                alert("登录成功!");
+              }
+            })
+}
+//点击注册后触发的函数
+function register(){
+  const params = new URLSearchParams();
+  let input_username = document.getElementById("username").value;
+  let input_password = document.getElementById("password").value;
+  params.append("username", input_username); // 参数名和后端一致
+  params.append("password", input_password);
+    axios.post("/api/register", params).then(response => {
+              console.log(response.data);
+              if(response.data.code==0){
+                alert("注册失败:"+response.data.error_msg);
+              }
+              else{
+                alert("注册成功!");
+              }
+            })
+
 }
 </script>
 

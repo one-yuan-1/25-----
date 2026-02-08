@@ -27,6 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
