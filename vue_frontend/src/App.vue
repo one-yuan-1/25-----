@@ -36,7 +36,7 @@
           />
         </div>
 
-        <button type="submit" class="login-btn">立即登录</button>
+        <button type="submit" class="login-btn" @click="login">立即登录</button>
       </form>
 
       <div class="extra-links">
@@ -60,6 +60,7 @@
 import { ref } from 'vue'
 import JoinForm from './components/JoinForm.vue' 
 import { ElMessage } from 'element-plus'
+import axios from "axios";
 // 控制页面切换的变量
 const isLogin = ref(false)
 
@@ -74,6 +75,24 @@ const handleLogin = (e) => {
   })
   
   isLogin.value = true
+}
+//点击登录后触发的函数
+function login(){
+    //给后端发请求
+  // 3. 构建表单格式参数（适配后端的@RequestParam）
+  const params = new URLSearchParams();
+  let input_username = document.getElementById("username").value;
+  let input_password = document.getElementById("password").value;
+  params.append("username", input_username); // 参数名和后端一致
+  params.append("password", input_password);
+
+  console.log("用户名:", input_username);
+  console.log("密码:", input_password);
+  axios.post("/api/login", params).then(response => {
+              console.log(response.data);
+            }).catch(error => {
+              console.error("登录请求失败:", error);
+            });
 }
 </script>
 

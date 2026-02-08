@@ -7,17 +7,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 import com._project.springboot_backend.DtoRes;
-import com._project.springboot_backend.Service;
+import com._project.springboot_backend.Service_class;
 @RestController
 public class Controller {
-	Service service = new Service();
+	Service_class service = new Service_class();
 	//处理post登录请求
-	@PostMapping("")
-	public DtoRes getMethodName(@RequestParam String param) {
-		return service.login();
+	@PostMapping("/api/login")
+	public DtoRes getMethodName(
+		@RequestParam String username, 
+		@RequestParam String password
+	) {
+		return service.login(username,password);
 	}
 	//处理post注册请求
-	@PostMapping("")
+	@PostMapping("/api/register")
 	public DtoRes register(
 		@RequestParam String username, 
 		@RequestParam String password

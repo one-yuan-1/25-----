@@ -30,6 +30,14 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+    <!-- 核心：Web 依赖，启动 Tomcat 容器，让应用持续运行 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+
     <!-- MySQL JDBC 驱动（MySQL 8.x 及以上） -->
     <dependency>
         <groupId>com.mysql</groupId>
