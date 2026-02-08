@@ -1,13 +1,14 @@
 <template>
-  <div class="login-container">
-    <!-- 顶部装饰区 -->
+  <div v-if="!isLogin" class="login-container">
+  
+    
     <div class="header-decoration">
       <div class="clover-icon">🍀</div>
       <h1 class="title">TFB 专属博客</h1>
       <p class="subtitle">Cherish every moment, share your light</p>
     </div>
 
-    <!-- 登录卡片 -->
+    
     <div class="login-card">
       <div class="card-header">
         <h2>用户登录</h2>
@@ -45,22 +46,39 @@
       </div>
     </div>
 
-    <!-- 底部装饰 -->
+    
     <div class="footer-decoration">
       <div class="small-clovers">🍀 💙 🍀</div>
     </div>
   </div>
+
+  <JoinForm v-else />
+
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import JoinForm from './components/JoinForm.vue' 
+import { ElMessage } from 'element-plus'
+// 控制页面切换的变量
+const isLogin = ref(false)
+
 const handleLogin = (e) => {
-  e.preventDefault();
-  alert('登录成功！欢迎来到你的专属博客');
-};
+  e.preventDefault()
+  ElMessage.success({
+    message: '登录成功！欢迎来到你的专属博客',
+    center: true, 
+    duration: 1500, // 1.5秒后自动关闭
+    customClass: 'custom-login-message' // 自定义样式类
+    
+  })
+  
+  isLogin.value = true
+}
 </script>
 
 <style scoped>
-/* 全局容器 */
+
 .login-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 50%, #e0f7fa 100%);
@@ -72,7 +90,7 @@ const handleLogin = (e) => {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 }
 
-/* 头部装饰 */
+
 .header-decoration {
   text-align: center;
   margin-bottom: 2rem;
@@ -104,7 +122,7 @@ const handleLogin = (e) => {
   font-size: 1.1rem;
 }
 
-/* 登录卡片 */
+
 .login-card {
   background: #fff;
   width: 100%;
@@ -128,7 +146,7 @@ const handleLogin = (e) => {
   margin-bottom: 2rem;
 }
 
-/* 表单区域 */
+
 .input-group {
   margin-bottom: 1.5rem;
   text-align: left;
@@ -164,7 +182,7 @@ const handleLogin = (e) => {
   box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
 }
 
-/* 登录按钮 */
+
 .login-btn {
   width: 100%;
   padding: 1rem;
@@ -183,7 +201,7 @@ const handleLogin = (e) => {
   box-shadow: 0 5px 15px rgba(79, 195, 247, 0.3);
 }
 
-/* 额外链接 */
+
 .extra-links {
   margin-top: 1.5rem;
   font-size: 0.9rem;
@@ -200,7 +218,7 @@ const handleLogin = (e) => {
   text-decoration: underline;
 }
 
-/* 底部装饰 */
+
 .footer-decoration {
   margin-top: 2rem;
   color: #0288d1;
@@ -216,5 +234,28 @@ const handleLogin = (e) => {
   0% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
+}
+
+:deep(.custom-login-message) {
+  background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.15);
+  color: #6fbee9;
+  font-weight: 500;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 9999 !important;
+  width: auto !important;
+  min-width: 320px !important;
+  text-align: center !important;
+}
+
+/* 提示框图标颜色匹配主题 */
+:deep(.custom-login-message .el-message__icon) {
+  color: #67c3ee;
+  margin-right: 8px;
 }
 </style>
