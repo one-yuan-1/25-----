@@ -31,9 +31,9 @@ public class DtoRes {
         this.address_img = address;
     }
     public String getAddressJson() {
-        return address_img;
+        return address_json;
     }
     public void setAddressJson(String address) {
-        this.address_img = address;
+        this.address_json = address;
     }    
 }
