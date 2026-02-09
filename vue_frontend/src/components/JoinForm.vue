@@ -1,7 +1,26 @@
 <script setup lang="js">
 // 导入 Element Plus 的通知组件并别名
 import { ElNotification as notify } from 'element-plus'
+import bus from '@/utils/bus'
+import { onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue';
+const img_url = ref(''); // 响应式
+// 监听事件
+const handleData = (data) => {
+  console.log('从A收到的数据:', data);
+  img_url.value = data.imgurl+"/1.png";
+  console.log(img_url.value)
+}
 
+// 挂载时监听
+onMounted(() => {
+  bus.on('brother-data', handleData)
+})
+
+// 卸载时取消监听（避免内存泄漏）
+onUnmounted(() => {
+  bus.off('brother-data', handleData)
+})
 // 定义返回按钮的点击事件处理函数
 // 修复：JS 环境下需要传完整的配置对象，而非直接传字符串
 const onBack = () => {
@@ -66,7 +85,7 @@ const onBack = () => {
     <div class="flex flex-wrap gap-4">
       <el-card style="max-width: 480px">
         <template #header>学习汇报1</template>
-        <img src="/06.png" style="width: 100%" />
+        <img v-bind:src="img_url" style="width: 100px;height: 50px;" />
       </el-card>
 
       <el-card style="max-width: 480px">
