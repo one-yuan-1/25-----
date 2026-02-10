@@ -44,8 +44,8 @@ public class Service_class {
                 String dbpw = rs.getString("password");
                 if(pw.equals(dbpw)){
                     dtoRes.setCode(1);
-                    dtoRes.setAddressImg(rs.getString("address_img"));
-                    dtoRes.setAddressJson(rs.getString("address_json"));
+                    dtoRes.setaddress_each_text(rs.getString("address_each_text"));
+                    dtoRes.setaddress_global_json(rs.getString("address_global_json"));
                 }
                 else{
                     dtoRes.setCode(0);

@@ -1,0 +1,8 @@
+html{
+  /*取消最外层的margin层，防止有白边*/ 
+  margin: 0px;
+}
+body{
+  /*取消最外层的margin层，防止有白边*/ 
+  margin: 0px;
+}

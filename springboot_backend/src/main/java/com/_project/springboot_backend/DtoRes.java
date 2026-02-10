@@ -7,9 +7,9 @@ public class DtoRes {
     int code;
     //出现什么问题的详细信息，如账号不存在，密码错误等
     String error_msg;
-    //登录成功后返回给前端对应的文本和图片的地址
-    String address_img;
-    String address_json;
+    //登录成功后返回给前端对应的全局信息和每一段图片和文本的信息
+    String address_each_text;
+    String address_global_json;
     
 
     public int getCode() {
@@ -24,16 +24,16 @@ public class DtoRes {
     public void setError_msg(String error_msg) {
         this.error_msg = error_msg;
     }
-    public String getAddressImg() {
-        return address_img;
+    public String getaddress_each_text() {
+        return address_each_text;
     }
-    public void setAddressImg(String address) {
-        this.address_img = address;
+    public void setaddress_each_text(String address) {
+        this.address_each_text = address;
     }
-    public String getAddressJson() {
-        return address_json;
+    public String getaddress_global_json() {
+        return address_global_json;
     }
-    public void setAddressJson(String address) {
-        this.address_json = address;
+    public void setaddress_global_json(String address) {
+        this.address_global_json = address;
     }    
 }

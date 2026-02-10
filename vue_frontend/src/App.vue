@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,nextTick  } from 'vue'
 import JoinForm from './components/JoinForm.vue' 
 import { ElMessage } from 'element-plus'
 import axios from "axios";
@@ -70,16 +70,16 @@ import bus from '@/utils/bus'
 const isLogin = ref(false)
 
 const handleLogin = (e) => {
-  e.preventDefault()
-  ElMessage.success({
-    message: '登录成功！欢迎来到你的专属博客',
-    center: true, 
-    duration: 1500, // 1.5秒后自动关闭
-    customClass: 'custom-login-message' // 自定义样式类
-    
-  })
-  
-  isLogin.value = true
+    e.preventDefault()
+  if(isLogin.value ==true){
+    ElMessage.success({
+      message: '登录成功！欢迎来到你的专属博客',
+      center: true, 
+      duration: 1500, // 1.5秒后自动关闭
+      customClass: 'custom-login-message' // 自定义样式类
+      
+    })
+  }
 }
 //点击登录后触发的函数
 function login(){
@@ -93,21 +93,32 @@ function login(){
 
   //console.log("用户名:", input_username);
   //console.log("密码:", input_password);
-  let img = '';
-  let text = '';
+  let each_text = '';
+  let global_json = '';
   axios.post("/api/login", params).then(response => {
               console.log(response.data);
-              img = response.data.addressImg;
-              text = response.data.addressJson;
+              each_text = response.data.address_each_text;
+              global_json = response.data.address_global_json;
+              
+              console.log(each_text);
+              console.log(global_json);
               if(response.data.code==0){
                 alert("登录失败:"+response.data.error_msg);
+                isLogin.value = false;
               }
               else{
+
+                isLogin.value = true;
+                //nextTick是vue提供的只在下一次dom更新后（这里是joinform组件加载后）才执行的函数
+                nextTick(() => {
+                  bus.emit('brother-data', {
+                    each:each_text,
+                    global:global_json
+                  });
                 alert("登录成功!");
-                bus.emit('brother-data', {
-                  imgurl:img,
-                  texturl:text
-                })
+                });
+
+
               }
             })
 }
