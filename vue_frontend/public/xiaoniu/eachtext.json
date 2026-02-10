@@ -1,0 +1,14 @@
+{
+    "1":{
+        "title":"第一段标题",
+        "text":"这是第一段文本",
+        "image":"./xiaoqiang/image/1.png"
+    },
+    "2":{
+        "title":"第二段标题",
+        "text":"这是第二段文本",
+        "image":"./xiaoqiang/image/2.png"
+    }
+
+
+}
