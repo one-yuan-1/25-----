@@ -23,4 +23,16 @@
         mvn spring-boot:run     
 
 
+流程图:             axios发登录请求        根据请求的url不同
+    前端myLogin组件---------------->controller类---->service类----->给不同函数处理，统一返回Dto类的对象（统一发挥的结果方便前端处理）
+            |                           |                                                       |
+            --------------------------->                                                        |springboot自动将后端发送的对象变成了json（序列化）
+                axios发送注册请求                                                                |
+        根据json提供的信息确认操作是否成功以及后端发来的错误信息和成功后的结果<---前端获取到json<-------
+            |                                                                                                        axios请求前端public目录下文件
+            -->账号密码正确就跳转到joinform组件然后myLogin组件用bus（第三方库）发送后端传来的两个json文件的地址给joinform组件->joinform---->得到文本信息和图片的路径
+                                                                                                                                                |
+                                                                           joinform组件把文本和图片渲染上去<---用图片路径axios请求public下具体图片<--
+    
+
         
