@@ -1,10 +1,15 @@
 <script setup lang="js">
 // 导入 Element Plus 的通知组件并别名
-import { ElNotification as notify } from 'element-plus'
+//import { ElNotification as notify } from 'element-plus'
 import bus from '@/utils/bus'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted,onUnmounted } from 'vue'
 import { ref } from 'vue';
 import axios from "axios";
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
+
+//import { from } from 'core-js/core/array';
 //import { te } from 'element-plus/es/locale';
 // 响应式
 const each_text_url = ref(""); //每段文本和图片url
@@ -47,7 +52,7 @@ const handleData = (data) => {
 }
 
 // 挂载时监听
-onMounted(() => {
+onMounted (() => {
   bus.on('brother-data', handleData);
   console.log("监听成功");
 })
@@ -58,13 +63,13 @@ onUnmounted(() => {
 })
 // 定义返回按钮的点击事件处理函数
 // 修复：JS 环境下需要传完整的配置对象，而非直接传字符串
-const onBack = () => {
-  notify({
-    title: '提示', 
-    message: 'Back',
-    type: 'info' 
-  })
-}
+//const onBack = () => {
+  //notify({
+    //title: '提示', 
+   // message: 'Back',
+    //type: 'info' 
+  //})
+//}
 
 //卡片悬浮效果
 //先获取鼠标位置
@@ -98,6 +103,19 @@ function cards_leave(e) {
     scale(1)
   `;
 }
+
+//back回到登录页面
+function onBack(){
+  router.push("/");
+  console.log("点击back");
+}
+
+
+//点击播客主页回到登录页面
+
+
+
+
 //添加和删除卡片功能
 function add(){
   alert("该功能暂未实现");
@@ -109,6 +127,8 @@ function del(){
 </script>
 
 <template>
+
+
 <div aria-label="A complete example of page header" class="background" :style="{ backgroundImage: 'url(' + back_url + ')' }">
     <el-page-header @back="onBack">
       <template #breadcrumb>
@@ -201,161 +221,10 @@ function del(){
 
     </div>
   </div>
+
+
 </template>
 
 <style scoped>
-/*展示的卡片的样式*/
-.card{
-  margin-top: 5vh;
-
-  width:40vh;
-  height:30vh;
-  background-color: white;
-  opacity: 0.8;
-  align-items: center;
-  display: flex;
-  /*垂直排布，因flex默认左右排布*/
-  flex-direction: column;
-  overflow-y: auto; /* 超出显示滚动条 */
-
-  border-radius: 25px;
-  /*卡片悬浮效果*/
-  transition: transform 0.15s ease-out;
-  transform-style: preserve-3d;
-}
-/*卡片的图片的样式*/
-.card_img{
-  width: 80%;
-  height: 60%;
-}
-
-/*最外层容器的样式*/
-.background{
-  background-size: cover; /* 适配容器大小 */
-  background-repeat: no-repeat; /* 不重复 */
-  /* 全屏 */
-  width: 100%;
-  height: 100vh;
-}
-
-html{
-  /*取消最外层的margin层，防止有白边*/ 
-  margin: 0px;
-}
-body{
-  /*取消最外层的margin层，防止有白边*/ 
-  margin: 0px;
-}
-
-/* 1. 完整穿透面包屑所有样式，确保文字不被截断 */
-:deep(.el-breadcrumb) {
-  /* 加背景遮罩，提升文字可读性 */
-  background: rgba(255, 255, 255, 0.8); 
-  padding: 8px 12px;
-  border-radius: 4px;
-  /* 强制不换行，避免文字截断 */
-  white-space: nowrap;
-}
-
-.flex {
-  display: flex;
-}
-.items-center {
-  align-items: center;
-}
-.flex-wrap {
-  flex-wrap: wrap;
-}
-.gap-4 {
-  gap: 16px; 
-}
-.ml-2 {
-  margin-left: 8px;
-}
-.text-large {
-  font-size: 18px;
-}
-.font-800 {
-  font-weight: 800;
-}
-.mr-3 {
-  margin-right: 12px;
-}
-.text-sm {
-  font-size: 14px;
-}
-.mr-2 {
-  margin-right: 8px;
-}
-
-
-
-/*添加的按钮的样式 */ 
-.cssbuttons-io-button {
-  margin-top: 1vh;
-  display: flex;
-  align-items: center;
-  font-family: inherit;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 0.7em 1.4em 0.7em 1.1em;
-  color: white;
-  background: #ad5389;
-  background: linear-gradient(
-    0deg,
-    rgba(20, 167, 62, 1) 0%,
-    rgba(102, 247, 113, 1) 100%
-  );
-  border: none;
-  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
-  letter-spacing: 0.05em;
-  border-radius: 20em;
-}
-
-.cssbuttons-io-button svg {
-  margin-right: 6px;
-}
-
-.cssbuttons-io-button:hover {
-  box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
-}
-
-.cssbuttons-io-button:active {
-  box-shadow: 0 0.3em 1em -0.5em #14a73e98;
-}
-/*删除的按钮的样式 */ 
-.del {
-  margin-top: 1vh;
-  display: flex;
-  align-items: center;
-  font-family: inherit;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 0.7em 1.4em 0.7em 1.1em;
-  color: rgb(202, 188, 188);
-  background: #cfc3ca;
-  background: linear-gradient(
-    0deg,
-    rgb(167, 64, 20) 0%,
-
-    rgb(247, 102, 102) 100%
-  );
-  border: none;
-  box-shadow: 0 0.7em 1.5em -0.5em red;
-  letter-spacing: 0.05em;
-  border-radius: 20em;
-}
-del svg {
-  margin-right: 6px;
-}
-
-del:hover {
-  box-shadow: 0 0.5em 1.5em -0.5em red ;
-}
-
-del:active {
-  box-shadow: 0 0.3em 1em -0.5em red ;
-}
+@import "./JoinForm.css";
 </style>
