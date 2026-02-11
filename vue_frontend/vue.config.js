@@ -3,6 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
     // 核心：配置反向代理
   devServer: {
+    port:5173,
     proxy: {
       // 1. 匹配以 /api 开头的请求
       '/api': {
