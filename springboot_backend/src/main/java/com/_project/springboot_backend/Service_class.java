@@ -81,7 +81,7 @@ public class Service_class {
         //先连接数据库
         String url = "jdbc:mysql://localhost:3306/25sql?useSSL=false&serverTimezone=UTC";
         String sql_check="SELECT * FROM un_pw WHERE username = ?";
-        String sql_insert="INSERT INTO un_pw (username,password,address_img,address_json) VALUES (?,?,?,?)";
+        String sql_insert="INSERT INTO un_pw (username,password,address_each_text,address_global_json) VALUES (?,?,?,?)";
         try(
             Connection conn = DriverManager.getConnection(url,"root","root");
             Statement st = conn.createStatement();
