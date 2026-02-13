@@ -1,13 +1,19 @@
 <template>
     <div class="register-card">
-        <div class="register">
+      <div class="header_decoration">
+         <div class="clovericon">🍀</div>
+         <h1 class="title-header">TFB 专属博客</h1>
+         <p class="sub-title">Cherish every moment, share your light</p>
+      </div>
+      <div class="card-re">
+          <div class="register">
             <h2>用户注册</h2>
             <p>Please register your account</p>
-        </div>
+          </div>
 
-        <form>
-            <div>
-                <label>用户名</label>
+        <form class="form-re">
+            <div class="register-set">
+                <label for="username">用户名</label>
 
                 <input 
                 type="text"
@@ -18,8 +24,8 @@
 
             </div>
             
-            <div>
-                <label>账号密码</label>
+            <div class="register-set">
+                <label for="password">账号密码</label>
 
                 <input 
                 type="text"
@@ -32,12 +38,13 @@
             <button type="submit" class="register-btn" @click="register">注册</button>
         </form>
 
-    </div>
-
-    <div class="reg-footer-decoration">
-      <div class="pinwheel">🎐 🪁 🎐</div>
-    </div>
+      </div>
     
+
+     <div class="reg-footer-decoration">
+       <div class="pinwheel">🎐 🪁 🎐</div>
+     </div>
+    </div>
 
 </template>
 
@@ -65,6 +72,6 @@ function register(){
 </script>
 
 <style scoped >
-
+@import"./registerPage.css";
 
 </style>
