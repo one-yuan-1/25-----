@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import my_login from './components/myLogin.vue'
 import Join from "./components/JoinForm.vue"
+import register from "./components/registerPage.vue"
 
 
 const routes = [
@@ -12,6 +13,10 @@ const routes = [
   {
     path: '/Join',
     component: Join
+  },
+  {
+    path:'/jump-r',
+    component:register
   }
 ]
 

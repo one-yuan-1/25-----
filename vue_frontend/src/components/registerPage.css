@@ -1,0 +1,146 @@
+.register-card{
+    min-height: 100vh;
+    background:linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.header_decoration {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.clovericon {
+  font-size: 3rem;
+  animation: pulse 2s infinite ease-in-out;
+  color: #4fc3f7;
+  text-shadow: 0 4px 8px rgba(79, 195, 247, 0.2);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.title-header {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #097835, #33de9c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0.5rem 0;
+  text-shadow: none;
+}
+
+.sub-title {
+  color: #1e5a37;
+  opacity: 0.7;
+  font-size: 1.1rem;
+}
+
+.card-re{
+    
+    background:rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 28px;
+    padding: 2.5rem;
+    box-shadow: 0 12px 40px rgba(79, 195, 247, 0.15);
+    text-align: center;
+    border: 1px solid rgba(79, 195, 247, 0.1);
+    position: relative;
+    
+}
+
+.register h2{
+    margin: 0 auto;
+    background: linear-gradient(45deg, #0a9f46, aquamarine);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    font-size: 1.8rem;
+    margin-bottom: 0.5 rem;
+
+}
+
+.register p{
+    color: #616060;
+}
+
+.register-set{
+    margin-bottom: 1.5rem;
+    text-align: left;
+    width: 90%;
+    margin: 0 auto 1.5rem;
+
+}
+
+.register-set label{
+    display: block;
+    margin-right: 8px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    
+}
+
+.register-set input{
+    width: 100%; 
+    padding: 0.8rem 1rem;
+    border: 2px solid rgba(84, 130, 117, 0.062); 
+    border-radius: 12px; 
+    background: rgba(255, 255, 255, 0.8); 
+    font-size: 1rem;
+    box-sizing: border-box; 
+    outline: none;
+    transition: all 0.3s ease;
+
+}
+
+.register-set input:focus {
+    border-color: #69c3a3; 
+    box-shadow: 0 0 8px rgba(42, 75, 53, 0.493); 
+}
+
+
+
+
+.register-btn{
+    width: 100%;
+    padding: 1rem;
+    background-color: aquamarine;
+    border-radius:25px;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.register-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgb(154, 219, 195);
+}
+
+.reg-footer-decoration{
+    margin-top: 2rem;
+    opacity: 0.7;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+
+}
+
+.pinwheel{
+    font-size: 25px;
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
