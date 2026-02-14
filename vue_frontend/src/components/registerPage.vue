@@ -53,8 +53,8 @@ import axios from 'axios';
 //点击注册后触发的函数
 function register(){
   const params = new URLSearchParams();
-  let input_username = document.getElementById("username").value;
-  let input_password = document.getElementById("password").value;
+  let input_username = document.getElementById("register_username").value;
+  let input_password = document.getElementById("register_password").value;
   params.append("username", input_username); // 参数名和后端一致
   params.append("password", input_password);
     axios.post("/api/register", params).then(response => {

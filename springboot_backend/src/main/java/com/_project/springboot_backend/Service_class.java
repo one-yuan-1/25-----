@@ -18,7 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com._project.springboot_backend.Repo;
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
-import java.util.List;  
+import java.util.List;
+import java.util.Objects;  
 
 @Service
 public class Service_class {
@@ -32,9 +33,9 @@ public class Service_class {
     DtoRes login(String un,String pw){
         DtoRes dtoRes = new DtoRes();
         //先判断数据库里有没有这个账号，没有就返回对应结果
-        List<DtoUnPw> lst;
+        DtoUnPw dtoUnPw;
         try{
-        lst=repo.find_pw(un);
+        dtoUnPw=repo.find_pw(un);
         }catch(PersistenceException e){
             System.err.println(e);
             dtoRes.setCode(0);
@@ -44,19 +45,15 @@ public class Service_class {
         //外部记录该账户是否存在以及密码
         boolean is_exist=false;
         String real_pw="";
-        for (DtoUnPw dtoUnPw : lst) {
-            //存在该账户
-            if(dtoUnPw.getUn().equals(un)){
-                //存一下
-                is_exist=true;
-                real_pw=dtoUnPw.getPW();
-                break;
-            }
-            else{
-                continue;
-            }
-            
+        //存在该账户
+        //Objects.equals(dtoUnPw.getUn(), un)内部处理null了更安全,但对象本身仍可能为null
+        if(dtoUnPw != null &&Objects.equals(dtoUnPw.getUn(), un)){
+            //存一下
+            is_exist=true;
+            real_pw=dtoUnPw.getPW();
         }
+
+            
 
             //没有这个账号，返回对应结果
             if(!is_exist){
@@ -96,9 +93,9 @@ public class Service_class {
         DtoRes dtoRes = new DtoRes();
 
         //先判断数据库里有没有这个账号，有就返回对应结果
-        List<DtoUnPw> lst;
+        DtoUnPw dtoUnPw;
         try{
-        lst=repo.find_pw(un);
+        dtoUnPw=repo.find_pw(un);
         }catch(PersistenceException e){
             System.err.println(e);
             dtoRes.setCode(0);
@@ -108,20 +105,16 @@ public class Service_class {
         //外部记录该账户是否存在
         boolean is_exist=false;
 
-        for (DtoUnPw dtoUnPw : lst) {
+
             //存在该账户
-            if(dtoUnPw.getUn().equals(un)){
+            if(dtoUnPw != null &&Objects.equals(dtoUnPw.getUn(), un)){
                 //存一下
                 is_exist=true;
-                break;
             }
-            else{
-                continue;
-            }
-            
-        }
+
+        
       
-            if(!is_exist){
+            if(is_exist){
                 //有这个账号，返回对应结果
                 dtoRes.setCode(0);
                 dtoRes.setError_msg("该账号已经存在");
@@ -132,6 +125,7 @@ public class Service_class {
         //没有就插入数据库，返回对应结果
         try{
         repo.insert_un_pw(un, pw);
+        repo.insert_default_global(un);
         }catch(PersistenceException e){
             System.err.println(e);
             dtoRes.setCode(0);
