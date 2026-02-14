@@ -1,6 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import my_login from './myLogin.vue'
+import my_login from './components/myLogin.vue'
 import Join from "./components/JoinForm.vue"
 
 

@@ -1,12 +1,12 @@
 {
     "1":{
-        "title":"学习成果——1",
-        "text":"web个人简介",
+        "title":"标题1",
+        "text":"文本1",
         "image":"./xiaoqiang/image/1.png"
     },
     "2":{
-        "title":"学习成果——2",
-        "text":"假期项目",
+        "title":"标题2",
+        "text":"文本2",
         "image":"./xiaoqiang/image/2.png"
     }
 

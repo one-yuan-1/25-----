@@ -13,7 +13,7 @@
         cd vue_frontend（如果已经在这个路径下的话就不用切换路径了）
         npm run dev
 后端(我已经创建完了，你们不用再创建了)：
-    springboot3.5.10，mysql，jdk17，maven 3.9.11，数据库mysql
+    springboot3.5.10，mysql，jdk17，maven 3.9.11，数据库mysql  mybatis3.0.3
     构建springboot：
         https://start.spring.io/选好下载压缩包解压
     写完后重新打包：
@@ -21,9 +21,12 @@
     运行(初次会自动下载依赖)：
         cd springboot_backend
         mvn spring-boot:run     
+    查询和终止占用8080端口的进程
+        netstat -ano | findstr :8080
+        kill
 
 
-流程图:             axios发登录请求        根据请求的url不同
+流程图(已过时):             axios发登录请求        根据请求的url不同
     前端myLogin组件---------------->controller类---->service类----->给不同函数处理，统一返回Dto类的对象（统一发挥的结果方便前端处理）
             |                           |                                                       |
             --------------------------->                                                        |springboot自动将后端发送的对象变成了json（序列化）

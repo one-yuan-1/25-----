@@ -12,10 +12,8 @@ const router = useRouter();
 //import { from } from 'core-js/core/array';
 //import { te } from 'element-plus/es/locale';
 // 响应式
-const each_text_url = ref(""); //每段文本和图片url
-const global_json_url = ref(""); //全局信息url
-
-const each_text=ref({});//每段文本和图片json
+const each_text = ref([]); //每段文本和图片列表
+const global_json = ref({}); //全局信息对象
 
 
 const username = ref('');
@@ -28,27 +26,20 @@ const head_url=ref('');
 // 监听事件
 const handleData = (data) => {
   console.log('从A收到的数据:', data);
-  each_text_url.value = data.each;
-  global_json_url.value = data.global;
+  each_text.value = data.each;
+  global_json.value = data.global;
   //console.log(each_text.value);
   //console.log(global_json.value);
-  //这里用axios访问public目录下资源
-  axios.get(each_text_url.value).then(response => {
-    each_text.value=response.data;
-    console.log(each_text.value);
-  });
-  axios.get(global_json_url.value).then(response => {
-    console.log("获取到的文本内容:", response.data);
-    username.value = response.data.Username;
-    telephone.value = response.data.Telephone;
-    remarks.value = response.data.Remarks;
-    address.value = response.data.Address;
-    totals.value = response.data.totals;
-    back_url.value = response.data.backimage;
-    head_url.value=response.data.head_img;
+  username.value=global_json.value.username;
+  telephone.value=global_json.value.telephone;
+  remarks.value=global_json.value.remarks;
+  address.value=global_json.value.address;
+  totals.value=global_json.value.totals;
+  back_url.value=global_json.value.back_img;
+  head_url.value=global_json.value.head_img;
 
-    console.log("用户名:", username.value);
-  });
+  console.log(back_url);
+  console.log(head_url);
 }
 
 // 挂载时监听
@@ -118,6 +109,7 @@ function onBack(){
 
 //添加和删除卡片功能
 function add(){
+
   alert("该功能暂未实现");
 }
 
