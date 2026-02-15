@@ -86,15 +86,15 @@ function login(){
 
   //console.log("用户名:", input_username);
   //console.log("密码:", input_password);
-  let each_text = '';
-  let global_json = '';
+  let each_card = [];
+  let global_text = {};
   axios.post("/api/login", params).then(response => {
               console.log(response.data);
-              each_text = response.data.address_each_text;
-              global_json = response.data.address_global_json;
+              each_card = response.data.lst_Each_cards;
+              global_text = response.data.global_text;
 
-              console.log(each_text);
-              console.log(global_json);
+              //console.log(each_card);
+              //console.log(global_text);
               if(response.data.code==0){
                 alert("登录失败:"+response.data.error_msg);
               }
@@ -102,8 +102,8 @@ function login(){
                 router.push('/Join').then(()=>{
                     setTimeout(() => {
                       bus.emit('brother-data', {
-                        each:each_text,
-                        global:global_json
+                        each:each_card,
+                        global:global_text
                       });
 
                     })

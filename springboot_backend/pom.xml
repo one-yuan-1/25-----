@@ -32,6 +32,13 @@
 	</properties>
 	<dependencies>
 
+    <!-- mybatis -->
+<dependency>
+    <groupId>org.mybatis.spring.boot</groupId>
+    <artifactId>mybatis-spring-boot-starter</artifactId>
+    <version>3.0.3</version>
+</dependency>
+
     <!-- 核心：Web 依赖，启动 Tomcat 容器，让应用持续运行 -->
     <dependency>
         <groupId>org.springframework.boot</groupId>

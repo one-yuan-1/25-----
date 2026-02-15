@@ -4,73 +4,86 @@ package com._project.springboot_backend;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-import com._project.springboot_backend.DtoRes;
+import java.sql.ResultSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com._project.springboot_backend.Repo;
+import com._project.springboot_backend.DTO.DtoRes;
+import com._project.springboot_backend.DTO.DtoUnPw;
+import java.util.List;
+import java.util.Objects;  
 
 @Service
 public class Service_class {
-
+    //注入依赖(repo接口)
+    private final Repo repo;
+    public Service_class(Repo repo){
+        this.repo=repo;
+    }
 
     //处理登录请求
     DtoRes login(String un,String pw){
         DtoRes dtoRes = new DtoRes();
-        //先连接数据库
-        String url = "jdbc:mysql://localhost:3306/25sql?useSSL=false&serverTimezone=UTC";
-        try(
-            Connection conn = DriverManager.getConnection(url,"root","root");
-            Statement st = conn.createStatement();
-        ){ 
-
-            //先判断数据库里有没有这个账号，没有就返回对应结果
-            String sql_check="SELECT * FROM un_pw WHERE username = ?";
-            try(
-                PreparedStatement ps = conn.prepareStatement(sql_check);
-            ){
-                ps.setString(1, un);
-                try(java.sql.ResultSet rs = ps.executeQuery();){
-                if(!rs.next()){
-                    //没有这个账号，返回对应结果
-                    dtoRes.setCode(0);
-                    dtoRes.setError_msg("该账号不存在");
-                    return dtoRes;
-                }
-
-                //有这个账号，继续判断密码是否正确
-                String dbpw = rs.getString("password");
-                if(pw.equals(dbpw)){
-                    dtoRes.setCode(1);
-                    dtoRes.setaddress_each_text(rs.getString("address_each_text"));
-                    dtoRes.setaddress_global_json(rs.getString("address_global_json"));
-                }
-                else{
-                    dtoRes.setCode(0);
-                    dtoRes.setError_msg("密码错误");
-                }
-                return dtoRes;
-
-                } catch (Exception e) {
-                    System.err.println("查询失败，出现异常："+e.getMessage());
-                }
-
-
-
-
-            }
-            catch(SQLException e){
-                System.err.println("查询失败，出现异常："+e.getMessage());
-
-            }
-
-        return dtoRes;
-        }catch(Exception e){
-            System.err.println("数据库连接失败，出现异常："+e.getMessage());
+        //先判断数据库里有没有这个账号，没有就返回对应结果
+        DtoUnPw dtoUnPw;
+        try{
+        dtoUnPw=repo.find_pw(un);
+        }catch(PersistenceException e){
+            System.err.println(e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
             return dtoRes;
         }
+        //外部记录该账户是否存在以及密码
+        boolean is_exist=false;
+        String real_pw="";
+        //存在该账户
+        //Objects.equals(dtoUnPw.getUn(), un)内部处理null了更安全,但对象本身仍可能为null
+        if(dtoUnPw != null &&Objects.equals(dtoUnPw.getUn(), un)){
+            //存一下
+            is_exist=true;
+            real_pw=dtoUnPw.getPW();
+        }
+
+            
+
+            //没有这个账号，返回对应结果
+            if(!is_exist){
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("该账号不存在");
+                return dtoRes;
+            }
+
+
+            //有这个账号，继续判断密码是否正确
+
+            
+            if(pw.equals(real_pw)){
+                //密码正确就返回对应的两个表的两个json数据
+                //先查放全局信息和放每个卡片信息的数据库再去放进结果类里返回
+                dtoRes.setCode(1);
+                dtoRes.setLst_Each_cards(
+                    repo.find_each_card(un)
+                );
+                dtoRes.setGlobal_text(
+                    repo.find_global_text(un)
+                );
+            }else{
+                //不正确
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("密码错误");
+                return dtoRes;
+            }
+                return dtoRes;
+
     }
 
 
@@ -78,45 +91,51 @@ public class Service_class {
     //处理注册请求
     DtoRes register(String un,String pw){
         DtoRes dtoRes = new DtoRes();
-        //先连接数据库
-        String url = "jdbc:mysql://localhost:3306/25sql?useSSL=false&serverTimezone=UTC";
-        String sql_check="SELECT * FROM un_pw WHERE username = ?";
-        String sql_insert="INSERT INTO un_pw (username,password,address_each_text,address_global_json) VALUES (?,?,?,?)";
-        try(
-            Connection conn = DriverManager.getConnection(url,"root","root");
-            Statement st = conn.createStatement();
-            PreparedStatement ps_check = conn.prepareStatement(sql_check);
-            PreparedStatement ps_insert = conn.prepareStatement(sql_insert)
-        ){ 
-            //先判断数据库里有没有这个账号，有就返回对应结果
-            ps_check.setString(1, un);
-            try(
-                java.sql.ResultSet rs = ps_check.executeQuery();                
-            ){
-                if(rs.next()){
-                    //有这个账号，返回对应结果
-                    dtoRes.setCode(0);
-                    dtoRes.setError_msg("该账号已存在");
-                    return dtoRes;
-                }
-                //没有就插入数据库，返回对应结果
-                ps_insert.setString(1, un);
-                ps_insert.setString(2, pw);
-                ps_insert.setString(3, "default_address");
-                ps_insert.setString(4, "default_address");
-                ps_insert.executeUpdate();
-                dtoRes.setCode(1);
-            } catch (Exception e) {
-                System.err.println("插入失败"+e.getMessage());
+
+        //先判断数据库里有没有这个账号，有就返回对应结果
+        DtoUnPw dtoUnPw;
+        try{
+        dtoUnPw=repo.find_pw(un);
+        }catch(PersistenceException e){
+            System.err.println(e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes;
+        }
+        //外部记录该账户是否存在
+        boolean is_exist=false;
+
+
+            //存在该账户
+            if(dtoUnPw != null &&Objects.equals(dtoUnPw.getUn(), un)){
+                //存一下
+                is_exist=true;
             }
 
+        
+      
+            if(is_exist){
+                //有这个账号，返回对应结果
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("该账号已经存在");
+                return dtoRes;
             }
-            catch(SQLException e){
-                System.err.println("查询失败"+e.getMessage());
 
-            }
+        
+        //没有就插入数据库，返回对应结果
+        try{
+        repo.insert_un_pw(un, pw);
+        repo.insert_default_global(un);
+        }catch(PersistenceException e){
+            System.err.println(e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes; 
+        }
 
-       
+        dtoRes.setCode(1);
+
+
 
         return dtoRes;
     }
