@@ -144,3 +144,29 @@
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
+
+.eye1{
+  background-image: url("../../public/eye.png");
+  width: 2vh;
+  height: 2vh;
+  position: relative;
+  background-repeat: no-repeat; /* 禁止图片重复 */
+  background-position: center;  /* 图片在按钮中居中显示 */
+  background-size: contain;    /* 关键：图片等比例缩放，完整显示在按钮内 */
+  border: none;
+  left:165px;
+  bottom: 211px;
+}
+
+.eye2{
+  background-image: url("../../public/eye.png");
+  width: 2vh;
+  height: 2vh;
+  position: relative;
+  background-repeat: no-repeat; /* 禁止图片重复 */
+  background-position: center;  /* 图片在按钮中居中显示 */
+  background-size: contain;    /* 关键：图片等比例缩放，完整显示在按钮内 */
+  border: none;
+  left:148px;
+  bottom: 107px;
+}
