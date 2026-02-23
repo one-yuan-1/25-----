@@ -88,11 +88,12 @@ function login(){
   //console.log("密码:", input_password);
   let each_card = [];
   let global_text = {};
+  let lst_bytes_picture = [];
   axios.post("/api/login", params).then(response => {
               console.log(response.data);
               each_card = response.data.lst_Each_cards;
               global_text = response.data.global_text;
-
+              lst_bytes_picture = response.data.file_res.lst_bytes ;
               //console.log(each_card);
               //console.log(global_text);
               if(response.data.code==0){
@@ -103,7 +104,8 @@ function login(){
                     setTimeout(() => {
                       bus.emit('brother-data', {
                         each:each_card,
-                        global:global_text
+                        global:global_text,
+                        lst_bytes_picture
                       });
 
                     })

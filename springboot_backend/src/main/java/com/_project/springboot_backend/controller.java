@@ -34,6 +34,10 @@ public class Controller {
 	) {
 		return service.register(username,password);
 	}
+	//处理添加卡片请求
 
+	//处理删除卡片请求
+
+	//处理修改全局信息请求
 
 }

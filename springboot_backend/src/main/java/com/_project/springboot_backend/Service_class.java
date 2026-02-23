@@ -14,20 +14,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-import com._project.springboot_backend.Repo;
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
+import com._project.springboot_backend.REPO.Repo;
+import com._project.springboot_backend.REPO.FileIO;
+
+
 import java.util.List;
 import java.util.Objects;  
 
 @Service
 public class Service_class {
-    //注入依赖(repo接口)
+    //注入依赖(repo类mapper接口和文件io的接口)
     private final Repo repo;
-    public Service_class(Repo repo){
+    private final FileIO fileIO;
+    public Service_class(Repo repo,FileIO fileIO){
         this.repo=repo;
+        this.fileIO = fileIO;
     }
+
 
     //处理登录请求
     DtoRes login(String un,String pw){
@@ -53,8 +60,6 @@ public class Service_class {
             real_pw=dtoUnPw.getPW();
         }
 
-            
-
             //没有这个账号，返回对应结果
             if(!is_exist){
                 dtoRes.setCode(0);
@@ -62,11 +67,19 @@ public class Service_class {
                 return dtoRes;
             }
 
-
             //有这个账号，继续判断密码是否正确
-
             
             if(pw.equals(real_pw)){
+                //先拿这个用户的id,因为文件操作是根据id来找目录的
+                int un_id;
+                try{
+                    un_id=repo.find_id(un);
+                }catch(PersistenceException e){
+                    System.err.println(e);
+                    dtoRes.setCode(0);
+                    dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+                    return dtoRes;
+                }
                 //密码正确就返回对应的两个表的两个json数据
                 //先查放全局信息和放每个卡片信息的数据库再去放进结果类里返回
                 dtoRes.setCode(1);
@@ -76,15 +89,27 @@ public class Service_class {
                 dtoRes.setGlobal_text(
                     repo.find_global_text(un)
                 );
+                dtoRes.setFile_res(
+                    //传入id(字符串格式)用于寻找对应目录
+                    fileIO.read_image(String.valueOf(un_id))
+                );
+                //如果文件操作失败则返回错误
+                if(dtoRes.getFile_res().getCode()==0){
+                    dtoRes.setCode(0);
+                    dtoRes.setError_msg(dtoRes.getFile_res().getError_msg());
+                }
+                return dtoRes;
             }else{
                 //不正确
                 dtoRes.setCode(0);
                 dtoRes.setError_msg("密码错误");
                 return dtoRes;
             }
-                return dtoRes;
 
     }
+
+
+
 
 
 
@@ -93,14 +118,11 @@ public class Service_class {
         DtoRes dtoRes = new DtoRes();
 
         //先判断数据库里有没有这个账号，有就返回对应结果
-        DtoUnPw dtoUnPw;
+        DtoUnPw dtoUnPw=null;
         try{
-        dtoUnPw=repo.find_pw(un);
+            dtoUnPw=repo.find_pw(un);
         }catch(PersistenceException e){
-            System.err.println(e);
-            dtoRes.setCode(0);
-            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
-            return dtoRes;
+            System.err.println(e);            
         }
         //外部记录该账户是否存在
         boolean is_exist=false;
@@ -111,8 +133,6 @@ public class Service_class {
                 //存一下
                 is_exist=true;
             }
-
-        
       
             if(is_exist){
                 //有这个账号，返回对应结果
@@ -124,20 +144,17 @@ public class Service_class {
         
         //没有就插入数据库，返回对应结果
         try{
-        repo.insert_un_pw(un, pw);
-        repo.insert_default_global(un);
+            repo.insert_un_pw(un, pw);
+            repo.insert_default_global(un);
         }catch(PersistenceException e){
             System.err.println(e);
             dtoRes.setCode(0);
             dtoRes.setError_msg("当前业务繁忙，请稍后再试");
             return dtoRes; 
         }
-
         dtoRes.setCode(1);
-
-
-
         return dtoRes;
+
     }
 
 

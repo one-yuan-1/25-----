@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.ArrayList; 
 import com._project.springboot_backend.DTO.DtoEach_card;
 import com._project.springboot_backend.DTO.DtoGlobal_text;
+import com._project.springboot_backend.DTO.FileRes;
+
 //这个是返回给前端的统一的结构
 public class DtoRes {
 
@@ -19,6 +21,8 @@ public DtoRes(){}
     //登录成功后返回给前端对应的全局信息和每一段图片和文本的信息
     DtoGlobal_text global_text;
     DtoEach_card each_card;
+    //图片的类
+    FileRes file_res;
     //列表，放每张图片
     List<DtoEach_card> lst_Each_cards;
 
@@ -59,5 +63,12 @@ public DtoRes(){}
     public void setLst_Each_cards(List<DtoEach_card> lst) {
         this.lst_Each_cards=lst;
     }   
+
+    public FileRes getFile_res() {
+        return file_res;
+    }
+    public void setFile_res(FileRes file_res) {
+        this.file_res = file_res;
+    }
 }
 

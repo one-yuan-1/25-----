@@ -23,6 +23,10 @@ const address= ref('');
 const totals= ref(0);
 const back_url = ref('');
 const head_url=ref('');
+
+const back = ref('');
+const head = ref('');
+const lst_cards = ref([]);  
 // 监听事件
 const handleData = (data) => {
   console.log('从A收到的数据:', data);
@@ -38,8 +42,13 @@ const handleData = (data) => {
   back_url.value=global_json.value.back_img;
   head_url.value=global_json.value.head_img;
 
-  console.log(back_url);
-  console.log(head_url);
+  //console.log(back_url);
+  //console.log(head_url);
+  //头像和背景图片,因为头像固定叫head.jpg,背景固定叫back.jpg,所以直接取最后一个就行了
+   head.value=data.lst_bytes_picture[data.lst_bytes_picture.length-1];
+   back.value=data.lst_bytes_picture[data.lst_bytes_picture.length-2];
+   lst_cards.value=data.lst_bytes_picture.slice(0,data.lst_bytes_picture.length-2);
+   console.log(lst_cards.value);
 }
 
 // 挂载时监听
@@ -121,7 +130,7 @@ function del(){
 <template>
 
 
-<div aria-label="A complete example of page header" class="background" :style="{ backgroundImage: 'url(' + back_url + ')' }">
+<div aria-label="A complete example of page header" class="background" :style="{ backgroundImage: 'url(data:image/png;base64,' + back + ')' }">
     <el-page-header @back="onBack">
       <template #breadcrumb>
         <el-breadcrumb separator="/">
@@ -136,7 +145,7 @@ function del(){
       </template>
       <template #content>
         <div class="flex items-center">
-          <el-avatar :size="50" v-bind:src="head_url" />
+          <el-avatar :size="50" v-bind:src="'data:image/png;base64,' + head" />
           <span class="text-large font-800 mr-3"> {{"欢迎来到"+username+"的博客"}}</span>
           <span
             class="text-sm mr-2"
@@ -206,7 +215,7 @@ function del(){
 <!-- 遍历显示卡片 --> 
       <div v-for="(value,key) in each_text" class="card" v-bind:key=key @mousemove="cards_move" @mouseleave="cards_leave">
         <p>{{value.title}}</p>
-        <img :src=value.image :alt="图片" class="card_img">
+        <img :src="'data:image/png;base64,' + lst_cards[value.id-1]"  :alt="图片" class="card_img">
         <p>{{value.text}}</p>
       </div> 
 

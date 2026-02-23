@@ -1,7 +1,8 @@
-package com._project.springboot_backend;
+package com._project.springboot_backend.REPO;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -21,8 +22,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;       
 
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 //mapper接口
 @Mapper
 public interface Repo {
@@ -30,6 +32,10 @@ public interface Repo {
     //根据用户名查询密码
     @Select("SELECT * FROM un_pw WHERE username = #{username}")
     DtoUnPw find_pw(String username);   
+
+    //根据用户名查id
+    @Select("SELECT id FROM un_pw WHERE username = #{username}")
+    int find_id(String username);
 
     //根据用户名查询某用户的每张卡片并返回[{},{}]
     @Select("SELECT * FROM each_card WHERE username = #{username}")
