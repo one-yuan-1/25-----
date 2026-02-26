@@ -50,6 +50,8 @@
 
             </div>
             <button type="submit" class="register-btn" >注册</button>
+            <button class="register-button" @click="return_my_login">返回登录</button>
+
         </form>
         <button class="eye1"  id= "bt-eye1" type="button" @click="eye1"></button>
         <button class="eye2" id= "bt-eye2" type="button" @click="eye2"></button>
@@ -97,6 +99,10 @@ function register(){
   }
   
 
+}
+
+function return_my_login(){
+  router.push("/");
 }
 
 let is_show1 = false;

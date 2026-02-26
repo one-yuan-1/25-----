@@ -118,10 +118,27 @@
     background-color: aquamarine;
     border-radius:25px;
     border: none;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .register-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgb(154, 219, 195);
+}
+
+.register-button{
+    width: 100%;
+    padding: 1rem;
+    background-color: aquamarine;
+    border-radius:25px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.register-button:hover{
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgb(154, 219, 195);
 }
@@ -155,7 +172,7 @@
   background-size: contain;    /* 关键：图片等比例缩放，完整显示在按钮内 */
   border: none;
   left:165px;
-  bottom: 211px;
+  bottom: 288px;
 }
 
 .eye2{
@@ -167,6 +184,6 @@
   background-position: center;  /* 图片在按钮中居中显示 */
   background-size: contain;    /* 关键：图片等比例缩放，完整显示在按钮内 */
   border: none;
-  left:148px;
-  bottom: 107px;
+  left:145px;
+  bottom: 185px;
 }
