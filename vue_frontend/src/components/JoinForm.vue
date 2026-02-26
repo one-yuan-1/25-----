@@ -27,6 +27,10 @@ const head_url=ref('');
 const back = ref('');
 const head = ref('');
 const lst_cards = ref([]);  
+const btn_ref = ref();
+
+//当前用户
+const current_user = ref('');
 // 监听事件
 const handleData = (data) => {
   console.log('从A收到的数据:', data);
@@ -41,6 +45,8 @@ const handleData = (data) => {
   totals.value=global_json.value.totals;
   back_url.value=global_json.value.back_img;
   head_url.value=global_json.value.head_img;
+  //当前用户名
+  current_user.value=data.un;
 
   //console.log(back_url);
   //console.log(head_url);
@@ -125,10 +131,84 @@ function add(){
 function del(){
   alert("该功能暂未实现");
 }
+//编辑头像和背景图片,点击之后先弹出一个框到页面中间，三个选项，改变背景/头像/文本信息
+function edit_btn(){
+  //先显示出来新菜单
+  let menu = document.getElementsByClassName("new_menu")[0];
+  menu.style.opacity = "1";
+  menu.style.zIndex = "1000";
+}
+//退出菜单
+function exit_menu(){
+  let menu = document.getElementsByClassName("new_menu")[0];
+  menu.style.opacity = "0";
+  menu.style.zIndex = "-1";
+}
+
+
+let type="";
+//上传图片的函数
+function upload(e){
+  const file = e.target.files[0];
+  //防止不上传文件]\
+  if (!file) {
+    alert("请选择一个文件进行上传");
+    return;
+  };
+  //前后端传文件必须用Formdata实例化出来的对象
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('user', current_user.value);
+  formData.append('type', type);
+    axios.post('/api/upload', formData).then(response => {
+      console.log(response.data);
+      //根据type的不同来把改完后的图片显示出来
+      if(response.data.code==0){
+        alert("更改失败:"+response.data.error_msg);
+      }else{
+          let file_res = response.data.file_res;
+          if(type=="head"){
+            head.value=file_res.lst_bytes[file_res.lst_bytes.length-1];
+          }else if(type=="back"){
+            back.value=file_res.lst_bytes[file_res.lst_bytes.length-1];
+          }
+           alert("更改成功!");
+           //关闭菜单
+           exit_menu();       
+      }
+    }).catch(error => {
+      console.error('上传失败:', error);
+      alert("上传失败，请重试");
+    });
+}
+
+
+//背景图片上传
+function edit_back(){
+  type="back";
+  btn_ref.value.click();
+}
+//头像图片上传
+function edit_head(){
+  type="head";
+  btn_ref.value.click();
+}
+//文本信息编辑
+function edit_text(){
+  alert("该功能暂未实现");
+}
 </script>
 
 <template>
-
+  <!--这里是edit按钮弹出的新的菜单--> 
+  <div class="new_menu">
+    <svg t="1772096946377" @click="exit_menu" class="icon_x" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4201" ><path d="M617.92 516.096l272 272-101.824 101.824-272-272-272 272-101.856-101.824 272-272-275.008-275.04L241.056 139.2l275.04 275.04 275.04-275.04 101.824 101.824-275.04 275.04z" fill="#000000" p-id="4202"></path></svg>
+    <div class="menu_item" @click="edit_back">编辑背景图片</div>
+    <div class="menu_item" @click="edit_head">编辑头像</div>
+    <div class="menu_item" @click="edit_text">编辑文本信息</div>
+  </div>
+  <!--这里是上传用的--> 
+  <input type="file" @change="upload" ref="btn_ref" style="display:none">
 
 <div aria-label="A complete example of page header" class="background" :style="{ backgroundImage: 'url(data:image/png;base64,' + back + ')' }">
     <el-page-header @back="onBack">
@@ -157,8 +237,7 @@ function del(){
       </template>
       <template #extra>
         <div class="flex items-center">
-          <el-button>Print</el-button>
-          <el-button type="primary" class="ml-2">Edit</el-button>
+          <el-button type="primary" class="ml-2" @click="edit_btn">Edit</el-button>
         </div>
       </template>
 

@@ -24,7 +24,8 @@ import com._project.springboot_backend.REPO.FileIO;
 
 import java.util.List;
 import java.util.Objects;  
-
+import org.apache.tika.Tika;
+import java.io.IOException;
 @Service
 public class Service_class {
     //注入依赖(repo类mapper接口和文件io的接口)
@@ -157,5 +158,55 @@ public class Service_class {
 
     }
 
+    //处理图片上传请求
+    DtoRes SaveImg(String type,String user,org.springframework.web.multipart.MultipartFile file){
+        DtoRes dtoRes = new DtoRes();
+        System.out.println("type:"+type+" user:"+user+" file:"+file.getOriginalFilename());
+        //先检查文件是不是图片
+        Tika tika = new Tika();
+        try {
+            String detectedType = tika.detect(file.getInputStream());
+            if (!detectedType.startsWith("image/")) {
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("上传的文件不是图片类型");
+                return dtoRes;
+            }
+        } catch (IOException e) {
+            System.err.println("文件检测异常: " + e.getMessage());
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("业务繁忙,请稍后再试");
+            return dtoRes;
+        }
+        //先拿这个用户的id,因为文件操作是根据id来找目录的
+        int un_id=-1;
+        try{
+            un_id=repo.find_id(user);
+        }catch(PersistenceException e){
+            System.err.println("数据库查询操作异常,find_id()报错"+e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes;
+        }
+        //保存图片
+        try{
+            byte[] fileBytes = file.getBytes();
+            //更改后的图片也发回前端并显示
+            dtoRes.setCode(1);
+            dtoRes.setFile_res(
+                 fileIO.save_img(String.valueOf(un_id),fileBytes,type)
+            );
+            //如果文件操作失败则返回错误
+            if(dtoRes.getFile_res().getCode()==0){
+                dtoRes.setCode(0);
+                dtoRes.setError_msg(dtoRes.getFile_res().getError_msg());
+            }
+            return dtoRes;
+        }catch(IOException e){
+            System.err.println("保存图片异常: " + e.getMessage());
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("业务繁忙,请稍后再试");
+            return dtoRes;
+        }
 
+    }
 }

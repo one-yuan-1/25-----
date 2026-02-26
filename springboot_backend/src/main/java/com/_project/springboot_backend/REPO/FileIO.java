@@ -92,9 +92,10 @@ public class FileIO {
         }
     }
 
-    //根据用户名创建目录并保存图片(一次多张图片)
+    //根据用户名创建目录并保存图片(一次一张)
     //注意用用户的id来作为用户图片的文件夹名
-    public FileRes save_img(String un_id,byte[] img_data,List<String> img_name){
+    public FileRes save_img(String un_id,byte[] img_data,String type){
+        FileRes fileRes = new FileRes();
         //根据用户名拼接出用户目录
         String userDir = file_address + "/" + un_id+ "/" ;
         try {
@@ -103,21 +104,31 @@ public class FileIO {
             if (!Files.exists(userPath)) {
                 Files.createDirectories(userPath);
             }
-            //遍历保存图片到用户目录
-            for(int i=0;i<img_name.size();i++){
-                Path imgPath = userPath.resolve(img_name.get(i));
-                Files.write(imgPath, img_data);
+            //根据type确定图片名称
+            String img_name = "";
+            if(type.equals("head")){
+                img_name = "head.png";
+            }else if(type.equals("back")){
+                img_name = "back.png";
             }
-            FileRes fileRes = new FileRes();
+            Path imgPath = userPath.resolve(img_name);
+            Files.write(imgPath, img_data);
             fileRes.setCode(1);
+            //保存成功后把图片传回去重新渲染
+            List<byte[]> lst_bytes = new ArrayList<>();
+            lst_bytes.add(img_data);
+            fileRes.setLst_bytes(lst_bytes);
             return fileRes;
         } catch (IOException e) {
             System.err.println("保存文件错误: " + e.getMessage());
-            FileRes fileRes = new FileRes();
             fileRes.setCode(0);
             fileRes.setError_msg("业务繁忙,请稍后再试");
             return fileRes; // 返回错误状态的FileRes对象
         }
 
     }
+
+
+
+
 }

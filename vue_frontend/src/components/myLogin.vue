@@ -89,6 +89,7 @@ function login(){
   let each_card = [];
   let global_text = {};
   let lst_bytes_picture = [];
+  let user="";
   axios.post("/api/login", params).then(response => {
               console.log(response.data);
               each_card = response.data.lst_Each_cards;
@@ -105,7 +106,8 @@ function login(){
                       bus.emit('brother-data', {
                         each:each_card,
                         global:global_text,
-                        lst_bytes_picture
+                        lst_bytes_picture,
+                        un:input_username
                       });
 
                     })
