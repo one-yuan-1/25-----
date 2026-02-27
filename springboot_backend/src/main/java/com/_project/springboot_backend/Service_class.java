@@ -16,11 +16,13 @@ import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com._project.springboot_backend.DTO.DtoEach_card;
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
+import com._project.springboot_backend.DTO.FileRes;
 import com._project.springboot_backend.REPO.Repo;
 import com._project.springboot_backend.REPO.FileIO;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;  
@@ -209,4 +211,116 @@ public class Service_class {
         }
 
     }
+
+    //添加卡片
+    DtoRes add_card(String text,String title,String user,org.springframework.web.multipart.MultipartFile file){
+        DtoRes dtoRes = new DtoRes();
+        //先检查文件是不是图片
+        Tika tika = new Tika();
+        try {
+            String detectedType = tika.detect(file.getInputStream());
+            if (!detectedType.startsWith("image/")) {
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("上传的文件不是图片类型");
+                return dtoRes;
+            }
+        } catch (IOException e) {
+            System.err.println("文件检测异常: " + e.getMessage());
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("业务繁忙,请稍后再试");
+            return dtoRes;
+        }
+        //先拿这个用户的id,因为文件操作是根据id来找目录的
+        int un_id=-1;
+        try{
+            un_id=repo.find_id(user);
+        }catch(PersistenceException e){
+            System.err.println("数据库查询操作异常,find_id()报错"+e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes;
+        }
+        //保存图片和文本信息(一个文件存一个数据库存)
+        try{
+            byte[] fileBytes = file.getBytes();
+            //先获取到图片对应的id
+
+            //用用户名查表看卡片最新的id,图片名就是id+1.png
+            List<DtoEach_card> lst_cards = repo.findByUsername(user);
+            String new_id = String.valueOf(Integer.parseInt(lst_cards.get(lst_cards.size()-1).getId()) + 1);
+            //添加卡片要先保存图片，避免数据库有内容但没图片
+
+            //保存图片
+            try{
+            dtoRes.setFile_res(
+                fileIO.save_cards( user,String.valueOf(un_id),new_id, fileBytes)
+            );
+            }catch(PersistenceException e){
+                System.err.println("添加卡片时保存图片报错"+e);
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+                return dtoRes;
+            }
+            //保存文本信息
+            try{
+                repo.insert_each_card(user, Integer.parseInt(new_id), title, text);
+            }catch(PersistenceException e){
+                System.err.println("数据库插入操作异常,insert_each_card()报错"+e);
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+                return dtoRes; 
+            }
+
+                    
+            //此时图片文本操作都成功就返回新卡片
+
+            dtoRes.setCode(1);
+            return dtoRes;
+        }catch(IOException e){
+            System.err.println("保存图片异常: " + e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("业务繁忙,请稍后再试");
+            return dtoRes;
+
+        }
+    
+    }
+
+    //删除卡片
+    DtoRes del_card(String id,String user){
+        DtoRes dtoRes = new DtoRes();
+        //先删除数据库里的文本信息,如果成功了再删除图片,如果文本都删不了就没必要删图片了
+        try{
+            repo.del_each_card(user, Integer.parseInt(id));
+        }catch(PersistenceException e){
+            System.err.println("数据库删除操作异常,del_each_card()报错"+e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes; 
+        }
+        //删除图片
+        try{
+            //先拿这个用户的id,因为文件操作是根据id来找目录的
+            int un_id=repo.find_id(user);
+            dtoRes.setFile_res(
+                fileIO.del_cards(String.valueOf(un_id), id)
+            );
+           dtoRes.setCode(1);
+           return dtoRes;
+        }catch(PersistenceException e){
+            System.err.println("数据库查询操作异常,find_id()报错"+e);
+            dtoRes.setCode(0);
+            dtoRes.setError_msg("当前业务繁忙，请稍后再试");
+            return dtoRes;
+        }
+
+        
+    }
+
+
+
+
+
+
+
 }

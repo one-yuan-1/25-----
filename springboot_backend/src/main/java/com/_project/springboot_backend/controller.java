@@ -38,9 +38,26 @@ public class Controller {
 		return service.register(username,password);
 	}
 	//处理添加卡片请求
-
+	@PostMapping("/api/add_card")
+	public DtoRes add_card(
+		@RequestParam("text") String text,
+		@RequestParam("title") String title,
+		@RequestParam("user") String user,
+		@RequestParam("file") MultipartFile file
+	) {
+		
+		
+		return service.add_card(text,title,user,file);
+	}
+	
 	//处理删除卡片请求
-
+	@PostMapping("/api/del_card")
+	public DtoRes del_card(
+		@RequestParam("id") String id,
+		@RequestParam("user") String user
+	) {
+		return service.del_card(id,user);
+	}
 	//处理后端传来的图片,根据type的值来确定是头像还是背景图,根据user确定用户,file是图片内容
 	@PostMapping("/api/upload")
 	public DtoRes EditImage(

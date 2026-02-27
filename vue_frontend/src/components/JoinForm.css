@@ -22,7 +22,14 @@
   width: 80%;
   height: 60%;
 }
-
+/*卡片的id*/
+.card_id{
+  position: relative;
+  top: 0;
+  left: -40%;
+  margin-bottom: 0%;
+  padding: 0%;
+}
 /*最外层容器的样式*/
 .background{
   background-size: cover; /* 适配容器大小 */
@@ -189,4 +196,29 @@ background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);  box-shadow
   width: 10%;
   height: 10%;
   cursor: pointer;
+}
+
+/*add增加卡片窗口的样式*/
+.add_menu{
+  /*垂直居中，弹性容器*/
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+  width: 60vh;
+  height: 40vh;
+
+  border-radius: 25px;
+
+background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  /*隐藏起来，禁止访问*/
+  opacity: 0;
+  z-index: -2;
+}
+ /*背景容器的，防止新增卡片超出背景*/
+.show_cards{
+ overflow-y: auto; /* 超出显示滚动条 */
 }

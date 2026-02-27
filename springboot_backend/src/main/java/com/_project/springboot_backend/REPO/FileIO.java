@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+import com._project.springboot_backend.DTO.DtoEach_card;
+
 
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.FileRes;
@@ -25,7 +27,10 @@ public class FileIO {
     //注入配置文件里的图片存储目录的地址
     @Value("${file.picture}")
     private String file_address;
-
+    private final Repo repo;
+    public FileIO(Repo repo) {
+        this.repo = repo;
+    }
 
     //根据用户名所对应的id读取对应目录下的所有图片并返回二进制数据列表
     public  FileRes read_image(String un_id){
@@ -125,9 +130,53 @@ public class FileIO {
             fileRes.setError_msg("业务繁忙,请稍后再试");
             return fileRes; // 返回错误状态的FileRes对象
         }
-
     }
 
+    //保存卡片的图片,需要用户名,和id和卡片的图片的数据
+    public FileRes save_cards(String un,String id,String new_id,byte[] img_data){
+        FileRes fileRes = new FileRes();
+        //根据用户id拼接出用户目录
+        String userDir = file_address + "/" + id+ "/" ;
+        try {
+            //创建用户目录（如果不存在）
+            Path userPath = Paths.get(userDir);
+            if (!Files.exists(userPath)) {
+                Files.createDirectories(userPath);
+            }
+            String img_name = new_id + ".png";
+            //保存图片到对应目录下
+            Path imgPath = userPath.resolve(img_name);
+            Files.write(imgPath, img_data);
+            //保存成功后code为1
+            fileRes.setCode(1);
+            return fileRes;
+        } catch (IOException e) {
+            System.err.println("保存文件错误: " + e.getMessage());
+            fileRes.setCode(0);
+            fileRes.setError_msg("业务繁忙,请稍后再试");
+            return fileRes; // 返回错误状态的FileRes对象
+        }
+    }
+
+    //删除卡片的图片,需要用户id,和卡片id
+    public FileRes del_cards(String un_id,String card_id){
+        FileRes fileRes = new FileRes();
+        //根据用户id拼接出用户目录
+        String userDir = file_address + "/" + un_id+ "/" ;
+        try {
+            //根据卡片id拼接出图片路径
+            Path imgPath = Paths.get(userDir).resolve(card_id + ".png");
+            //删除图片文件
+            Files.deleteIfExists(imgPath);
+            fileRes.setCode(1);
+            return fileRes;
+        } catch (IOException e) {
+            System.err.println("删除文件错误: " + e);
+            fileRes.setCode(0);
+            fileRes.setError_msg("业务繁忙,请稍后再试");
+            return fileRes; 
+        }
+    }
 
 
 

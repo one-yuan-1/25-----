@@ -117,20 +117,8 @@ function onBack(){
 }
 
 
-//点击播客主页回到登录页面
 
 
-
-
-//添加和删除卡片功能
-function add(){
-
-  alert("该功能暂未实现");
-}
-
-function del(){
-  alert("该功能暂未实现");
-}
 //编辑头像和背景图片,点击之后先弹出一个框到页面中间，三个选项，改变背景/头像/文本信息
 function edit_btn(){
   //先显示出来新菜单
@@ -168,9 +156,9 @@ function upload(e){
       }else{
           let file_res = response.data.file_res;
           if(type=="head"){
-            head.value=file_res.lst_bytes[file_res.lst_bytes.length-1];
+            head.value=file_res.lst_bytes[0];
           }else if(type=="back"){
-            back.value=file_res.lst_bytes[file_res.lst_bytes.length-1];
+            back.value=file_res.lst_bytes[0];
           }
            alert("更改成功!");
            //关闭菜单
@@ -197,6 +185,93 @@ function edit_head(){
 function edit_text(){
   alert("该功能暂未实现");
 }
+
+
+
+
+
+//添加卡片的确认和取消按钮
+function cancel_add(){
+  let menu = document.getElementsByClassName("add_menu")[0];
+  menu.style.opacity = "0";
+  menu.style.zIndex = "-1";
+}
+function show_add(){
+  //先显示出来新菜单
+  let menu = document.getElementsByClassName("add_menu")[0];
+  menu.style.opacity = "1";
+  menu.style.zIndex = "1000";
+}
+function add(){
+
+  let title = document.getElementById("add_title").value;
+  let text = document.getElementById("add_text").value;
+  let file = document.getElementById("add_file").files[0];
+  if(!file){
+    alert("请选择一张图片");
+    return;
+  }
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('user', current_user.value);
+  formData.append('title', title);
+  formData.append('text', text);
+    axios.post('/api/add_card', formData).then(response => {
+      console.log(response.data);
+      if(response.data.code==0){
+        alert("添加失败:"+response.data.error_msg);
+      }else{
+           alert("添加成功!");
+           //关闭菜单
+           cancel_add();  
+           //刷新页面,配合后续刷新后重新申请数据
+           router.go(0);     
+      }
+    }).catch(error => {
+      console.error('添加失败:', error);
+      alert("添加失败，请重试");
+    });
+}
+
+//删除卡片功能
+function del(){
+  //本质上是告诉后端要删除的卡片的id
+  let input_id;
+  input_id = prompt("请输入要删除的卡片的id");
+  //处理用户取消输入或者输入空字符串
+  if(!input_id){
+    alert("请输入id");
+    return;
+  }
+  //处理输入的id不是数字或者超出范围
+  if(isNaN(input_id) || input_id<1 || input_id>each_text.value.length){
+    alert("请输入有效的id");
+    return;
+  }
+
+  //其实显示的是假id，是数组下标，但是能用这个下标从数组里访问到对象的id属性从而获得真的id
+  let real_id = each_text.value[input_id-1].id;
+  console.log("要删除的卡片的真实id是"+real_id);
+
+  //给后端发请求,id和用户名
+  const formData = new FormData();
+  formData.append('id', real_id);
+  formData.append('user', current_user.value);
+  
+  axios.post("/api/del_card",formData).then(response => {
+    console.log(response.data);
+    if(response.data.code==0){
+      alert("删除失败:"+response.data.error_msg);
+    }else{
+         alert("删除成功!");
+         //刷新页面,配合后续刷新后重新申请数据
+         router.go(0);     
+    }
+  }).catch(error => {
+    console.error('删除失败:', error);
+    alert("删除失败，请重试");
+  });
+}
 </script>
 
 <template>
@@ -207,15 +282,23 @@ function edit_text(){
     <div class="menu_item" @click="edit_head">编辑头像</div>
     <div class="menu_item" @click="edit_text">编辑文本信息</div>
   </div>
+  <!--这里是add按钮增加卡片的弹出的窗口--> 
+  <div class="add_menu">
+      <div class="add_item">标题:<input type="text" id="add_title"></div>
+      <div class="add_item">文本:<input type="text" id="add_text"></div>
+      <div class="add_item">图片:<input type="file" id="add_file"></div>
+      <button class="add_confirm" @click="add">确认添加</button>
+      <button class="add_cancel" @click="cancel_add">取消</button>
+  </div>
   <!--这里是上传用的--> 
   <input type="file" @change="upload" ref="btn_ref" style="display:none">
 
-<div aria-label="A complete example of page header" class="background" :style="{ backgroundImage: 'url(data:image/png;base64,' + back + ')' }">
+<div aria-label="A complete example of page header" class="background show_cards" :style="{ backgroundImage: 'url(data:image/png;base64,' + back + ')' }">
     <el-page-header @back="onBack">
       <template #breadcrumb>
         <el-breadcrumb separator="/">
           
-          <el-breadcrumb-item :to="{ path: head_url }">
+          <el-breadcrumb-item :to="{ path: head_url }" >
             博客主页
           </el-breadcrumb-item>
           <el-breadcrumb-item>
@@ -261,11 +344,11 @@ function edit_text(){
 
  
 
-    <div class="flex flex-wrap gap-4">
+    <div class=" flex flex-wrap gap-4">
 
      <el-card class="card">
       <!-- 添加的按钮 --> 
-      <button class="cssbuttons-io-button" @click="add">
+      <button class="cssbuttons-io-button" @click="show_add">
         <svg
           height="24"
           width="24"
@@ -293,8 +376,9 @@ function edit_text(){
       </el-card>
 <!-- 遍历显示卡片 --> 
       <div v-for="(value,key) in each_text" class="card" v-bind:key=key @mousemove="cards_move" @mouseleave="cards_leave">
+        <p class="card_id">id:{{key+1}}</p>
         <p>{{value.title}}</p>
-        <img :src="'data:image/png;base64,' + lst_cards[value.id-1]"  :alt="图片" class="card_img">
+        <img :src="'data:image/png;base64,' + lst_cards[key]"  :alt="图片" class="card_img">
         <p>{{value.text}}</p>
       </div> 
 

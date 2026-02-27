@@ -4,8 +4,10 @@ import java.sql.Statement;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -48,8 +50,20 @@ public interface Repo {
     //插入账号密码，unpw表内容
     @Insert("INSERT INTO un_pw (username,password) VALUES ( #{username}, #{password})")
     void insert_un_pw(String username,String password);
+
     //插入默认，global表内容
     @Insert("INSERT INTO global_text (Username,Telephone,Remarks,Address,totals,back_img,head_img) VALUES ( #{Username},'待填入','待填入','待填入','待填入','/default/back_img.png','/default/head_img.png')")
     void insert_default_global(String Username);   
 
+    //查询each_card表里某用户的所有卡片,@Param()在只有一个参数时可以省略
+    @Select("SELECT * FROM each_card WHERE username = #{un}")
+    List<DtoEach_card> findByUsername(@Param("un") String un);
+
+    //插入每张卡片，each_card表内容
+    @Insert("INSERT INTO each_card (username,id,title,text) VALUES (#{un},#{id},#{title},#{text})")
+    void insert_each_card(@Param("un") String username,@Param("id") int id,@Param("title") String title,@Param("text") String text);
+
+    //删除每张卡片，each_card表内容
+    @Delete("DELETE FROM each_card WHERE username = #{un} AND id = #{id}")
+    void del_each_card(@Param("un") String username,@Param("id") int id);
 }
