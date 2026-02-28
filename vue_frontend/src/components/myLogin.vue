@@ -76,7 +76,7 @@ const handleLogin = (e) => {
 
 //点击登录后触发的函数
 function login(){
-    //给后端发请求
+  //给后端发请求
   //构建表单格式参数（适配后端的@RequestParam）
   const params = new URLSearchParams();
   let input_username = document.getElementById("username").value;

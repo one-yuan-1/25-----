@@ -246,8 +246,14 @@ public class Service_class {
             //先获取到图片对应的id
 
             //用用户名查表看卡片最新的id,图片名就是id+1.png
+            String new_id ;
             List<DtoEach_card> lst_cards = repo.findByUsername(user);
-            String new_id = String.valueOf(Integer.parseInt(lst_cards.get(lst_cards.size()-1).getId()) + 1);
+            if(lst_cards.size() == 0){
+                new_id = "1";
+            }else{
+                new_id = String.valueOf(Integer.parseInt(lst_cards.get(lst_cards.size()-1).getId()) + 1);
+            }
+   
             //添加卡片要先保存图片，避免数据库有内容但没图片
 
             //保存图片
