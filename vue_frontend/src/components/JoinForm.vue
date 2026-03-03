@@ -225,7 +225,9 @@ function add(){
            //关闭菜单
            cancel_add();  
            //刷新页面,配合后续刷新后重新申请数据
-           router.go(0);     
+           //router.go(0);   
+           //暂时回到登陆页面以后再恢复上面的
+           router.push("/");  
       }
     }).catch(error => {
       console.error('添加失败:', error);
@@ -257,7 +259,7 @@ function del(){
   const formData = new FormData();
   formData.append('id', real_id);
   formData.append('user', current_user.value);
-  
+
   axios.post("/api/del_card",formData).then(response => {
     console.log(response.data);
     if(response.data.code==0){
@@ -265,7 +267,9 @@ function del(){
     }else{
          alert("删除成功!");
          //刷新页面,配合后续刷新后重新申请数据
-         router.go(0);     
+         //router.go(0);     
+          //暂时回到登陆页面以后再恢复上面的
+          router.push("/");  
     }
   }).catch(error => {
     console.error('删除失败:', error);
