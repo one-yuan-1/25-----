@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com._project.springboot_backend.DTO.DtoEach_card;
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
+import com._project.springboot_backend.DTO.FileRes;
 import com._project.springboot_backend.REPO.FileIO;
 import com._project.springboot_backend.REPO.Repo;
 @Service
