@@ -244,3 +244,16 @@
   color: #67c3ee;
   margin-right: 8px;
 }
+
+.eye-login{
+  background-image: url("../../public/eye.png");
+  width: 2vh;
+  height: 2vh;
+  position: relative;
+  background-repeat: no-repeat; /* 禁止图片重复 */
+  background-position: center;  /* 图片在按钮中居中显示 */
+  background-size: contain;    /* 关键：图片等比例缩放，完整显示在按钮内 */
+  border: none;
+  left:150px;
+  bottom: 117px;
+}

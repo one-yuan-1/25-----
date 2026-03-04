@@ -43,6 +43,8 @@
 
         <button type="submit" class="login-btn" @click="login">立即登录</button>
       </form>
+      
+      <button class="eye-login"  id= "btn-eye.login" type="button" @click="eyeLogin"></button>
 
       <div class="extra-links">
         <a href="#" class="link" @click="jump">注册账号</a>
@@ -123,6 +125,22 @@ function login(){
 
 function jump(){
   router.push('jump-r')
+}
+
+let is_show = false;
+function eyeLogin(){
+  
+  let input = document.getElementById("password");
+  if(!is_show){
+     input.type = "text";
+     is_show = true;
+  }else{
+    input.type = "password";
+     is_show = false;
+
+  }
+  
+  
 }
 
 </script>
