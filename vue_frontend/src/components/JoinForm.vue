@@ -314,52 +314,51 @@ function del(){
   <input type="file" @change="upload" ref="btn_ref" style="display:none">
 
 <div aria-label="A complete example of page header" class="background show_cards" :style="{ backgroundImage: 'url(data:image/png;base64,' + back + ')' }">
-    <el-page-header @back="onBack">
-      <template #breadcrumb>
-        <el-breadcrumb separator="/">
-          
-          <el-breadcrumb-item :to="{ path: head_url }" >
-            博客主页
-          </el-breadcrumb-item>
-          <el-breadcrumb-item>
-            <a href="javascript:;">{{username}}</a> 
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </template>
-      <template #content>
-        <div class="flex items-center">
-          <el-avatar :size="50" v-bind:src="'data:image/png;base64,' + head" />
-          <span class="text-large font-800 mr-3"> {{"欢迎来到"+username+"的博客"}}</span>
-          <span
-            class="text-sm mr-2"
-            style="color: var(--el-text-color-regular)"
-          >
-          </span>
-          <el-tag>大V</el-tag>
-        </div>
-      </template>
-      <template #extra>
-        <div class="flex items-center">
-          <el-button type="primary" class="ml-2" @click="edit_btn">Edit</el-button>
-        </div>
-      </template>
+  <el-page-header @back="onBack" class="custom-page-header">
+    <template #breadcrumb>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: head_url }">
+          博客主页
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          <a href="javascript:;">{{username}}</a>
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </template>
+    <template #content>
+      <div class="flex items-center">
+        <el-avatar :size="50" v-bind:src="'data:image/png;base64,' + head" />
+        <span class="text-large font-800 mr-3"> {{"欢迎来到"+username+"的博客"}}</span>
+        <span
+          class="text-sm mr-2"
+          style="color: var(--el-text-color-regular)"
+        >
+        </span>
+        <el-tag>大V</el-tag>
+      </div>
+    </template>
+    <template #extra>
+      <div class="flex items-center">
+        <el-button type="primary" class="ml-2" @click="edit_btn">Edit</el-button>
+      </div>
+    </template>
 
-      <el-descriptions :column="3" size="small">
-        <el-descriptions-item label="Username">
-          {{username}}
-        </el-descriptions-item>
-        <el-descriptions-item label="Telephone">
-          {{telephone}}
-        </el-descriptions-item>
-        <el-descriptions-item label="Place">{{address}}</el-descriptions-item>
-        <el-descriptions-item label="Remarks">
-          <el-tag size="small">{{remarks}}</el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="School">
-          应急管理大学
-        </el-descriptions-item>
-      </el-descriptions>
-    </el-page-header>
+    <el-descriptions :column="3" size="small" class="custom-descriptions">
+      <el-descriptions-item label="Username">
+        {{username}}
+      </el-descriptions-item>
+      <el-descriptions-item label="Telephone">
+        {{telephone}}
+      </el-descriptions-item>
+      <el-descriptions-item label="Place">{{address}}</el-descriptions-item>
+      <el-descriptions-item label="Remarks">
+        <el-tag size="small">{{remarks}}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="School">
+        应急管理大学
+      </el-descriptions-item>
+    </el-descriptions>
+  </el-page-header>
 
 
  

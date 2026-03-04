@@ -222,3 +222,99 @@ background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);  box-shadow
 .show_cards{
  overflow-y: auto; /* 超出显示滚动条 */
 }
+.custom-page-header {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  margin-bottom: 16px;
+}
+
+/* 面包屑样式优化 */
+.custom-page-header :deep(.el-breadcrumb) {
+  margin-bottom: 12px;
+}
+
+.custom-page-header :deep(.el-breadcrumb__item a) {
+  color: var(--el-color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.custom-page-header :deep(.el-breadcrumb__item a:hover) {
+  color: var(--el-color-primary-light-3);
+}
+
+.custom-page-header :deep(.el-breadcrumb__separator) {
+  color: var(--el-text-color-placeholder);
+}
+
+/* 头像与欢迎语区域美化 */
+.custom-page-header :deep(.el-avatar) {
+  border: 2px solid var(--el-color-primary-light-8);
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.custom-page-header :deep(.el-avatar:hover) {
+  transform: scale(1.05);
+}
+
+.custom-page-header :deep(.text-large) {
+  font-size: 16px;
+  color: var(--el-text-color-primary);
+  font-weight: 700;
+}
+
+.custom-page-header :deep(.el-tag) {
+  background-color: var(--el-color-primary-light-8);
+  color: var(--el-color-primary);
+  border: none;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+/* 编辑按钮美化 */
+.custom-page-header :deep(.el-button--primary) {
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.custom-page-header :deep(.el-button--primary:hover) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
+}
+
+/* 描述列表美化 */
+.custom-descriptions {
+  margin-top: 16px;
+  --el-descriptions-item-label-width: 100px;
+}
+
+.custom-descriptions :deep(.el-descriptions__table) {
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.custom-descriptions :deep(.el-descriptions-item__label) {
+  background-color: var(--el-color-primary-light-9);
+  font-weight: 600;
+  color: var(--el-text-color-regular);
+  padding: 10px 16px;
+  border-right: 1px solid var(--el-border-color-light);
+}
+
+.custom-descriptions :deep(.el-descriptions-item__content) {
+  padding: 10px 16px;
+  color: var(--el-text-color-primary);
+}
+
+/* 响应式适配 - 小屏幕自动变单列 */
+@media (max-width: 768px) {
+  .custom-descriptions {
+    --el-descriptions-column: 1 !important;
+  }
+}
