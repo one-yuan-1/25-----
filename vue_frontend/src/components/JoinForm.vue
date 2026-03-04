@@ -15,7 +15,7 @@ const router = useRouter();
 const each_text = ref([]); //每段文本和图片列表
 const global_json = ref({}); //全局信息对象
 
-
+const user = ref('');
 const username = ref('');
 const telephone= ref('');
 const remarks= ref('');
@@ -181,9 +181,25 @@ function edit_head(){
   type="head";
   btn_ref.value.click();
 }
-//文本信息编辑
-function edit_text(){
-  alert("该功能暂未实现");
+//修改文本与编辑图片应该使用两个接口
+// //文本信息编辑
+// function edit_text(){
+//   alert("text");
+//   btn_ref.click();
+// }
+function edit_text(){ 
+  router.push({
+    path: '/edit',
+    query: {
+      username:username.value,
+      telephone:telephone.value,
+      remarks:remarks.value,
+      address:address.value,
+      user:user.value
+    }
+}
+);
+
 }
 
 

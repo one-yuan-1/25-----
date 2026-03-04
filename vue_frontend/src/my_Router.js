@@ -17,6 +17,11 @@ const routes = [
   {
     path:'/jump-r',
     component:register
+  },
+  {
+    path: '/edit',
+    name: 'EditText',
+    component: () => import('@/components/EditTest.vue')
   }
 ]
 

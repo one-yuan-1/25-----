@@ -1,30 +1,17 @@
 package com._project.springboot_backend.REPO;
-import java.sql.Connection;
-import java.sql.Statement;
+import java.util.List;
 
-import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
-import com._project.springboot_backend.DTO.DtoRes;
-import com._project.springboot_backend.DTO.DtoUnPw;
 import com._project.springboot_backend.DTO.DtoEach_card;
 import com._project.springboot_backend.DTO.DtoGlobal_text;
-
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;       
-
-import org.springframework.stereotype.Repository;
+import com._project.springboot_backend.DTO.DtoUnPw;
 
 @Repository
 //mapper接口
@@ -33,7 +20,7 @@ public interface Repo {
 
     //根据用户名查询密码
     @Select("SELECT * FROM un_pw WHERE username = #{username}")
-    DtoUnPw find_pw(String username);   
+    DtoUnPw find_pw(String username);
 
     //根据用户名查id
     @Select("SELECT id FROM un_pw WHERE username = #{username}")
@@ -46,6 +33,9 @@ public interface Repo {
     //根据用户名查询某用户的全局信息
     @Select("SELECT * FROM global_text WHERE username = #{Username}")
     DtoGlobal_text find_global_text(String Username);
+    //gengxin信息，global表内容
+    @Update("UPDATE global_text SET username = #{username},telephone = #{telephone},remarks = #{remarks},address = #{address} WHERE username = #{username}")
+    void update_global_text(String username,String telephone,String remarks,String address);
 
     //插入账号密码，unpw表内容
     @Insert("INSERT INTO un_pw (username,password) VALUES ( #{username}, #{password})")
