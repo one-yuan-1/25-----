@@ -138,18 +138,41 @@ public class Service_class {
             }
 
         
-        //没有就插入数据库，返回对应结果
+        //没有就插入数据库并添加默认头像和背景图，返回对应结果
         try{
             repo.insert_un_pw(un, pw);
             repo.insert_default_global(un);
+            //设置默认头像和背景图
+            //先读取默认用户图片
+            FileRes default_file_res = fileIO.read_image("0");
+            byte[] defaultBack = default_file_res.getLst_bytes().get(0);
+            byte[] defaultHead = default_file_res.getLst_bytes().get(1);
+            //再保存头像和背景图到新用户目录下
+            int un_id=repo.find_id(un);
+             //根据用户名拼接出用户目录
+            //保存图片到对应目录下
+            try{
+                fileIO.save_img(String.valueOf(un_id),defaultBack,"back");
+                fileIO.save_img(String.valueOf(un_id),defaultHead,"head");
+            }catch(PersistenceException e){
+                System.err.println("保存默认图片异常: " + e);
+                dtoRes.setCode(0);
+                dtoRes.setError_msg("业务繁忙,请稍后再试");
+                return dtoRes;
+            }
+            dtoRes.setCode(1);
+            return dtoRes;
         }catch(PersistenceException e){
-            System.err.println(e);
+
+   
             dtoRes.setCode(0);
             dtoRes.setError_msg("当前业务繁忙，请稍后再试");
-            return dtoRes; 
+            // 重新抛出一个运行时异常,为了让事务回滚
+            throw new RuntimeException("更新失败", e);
+        }finally{
+            return dtoRes;
         }
-        dtoRes.setCode(1);
-        return dtoRes;
+       
 
     }
 
@@ -239,8 +262,14 @@ public class Service_class {
             //先获取到图片对应的id
 
             //用用户名查表看卡片最新的id,图片名就是id+1.png
+            String new_id;
             List<DtoEach_card> lst_cards = repo.findByUsername(user);
-            String new_id = String.valueOf(Integer.parseInt(lst_cards.get(lst_cards.size()-1).getId()) + 1);
+            if(lst_cards.size() == 0){
+                new_id = "1";
+            }else{
+                new_id = String.valueOf(Integer.parseInt(lst_cards.get(lst_cards.size()-1).getId()) + 1);
+            }
+   
             //添加卡片要先保存图片，避免数据库有内容但没图片
 
             //保存图片
