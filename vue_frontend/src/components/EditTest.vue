@@ -113,7 +113,7 @@ const submitEdit = () => {
 
 // 返回
 const goBack = () => {
-  router.push('/Join')
+  router.push('/')
 }
 </script>
    <style>

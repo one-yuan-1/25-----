@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com._project.springboot_backend.App",
+            "projectName": "springboot_backend"
+        },
+        {
+            "type": "cmake",
+            "request": "launch",
+            "name": "CMake: 配置项目",
+            "cmakeDebugType": "configure",
+            "clean": false,
+            "configureAll": false
+        }
+    ]
+}

@@ -14,6 +14,7 @@ import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
 import com._project.springboot_backend.REPO.FileIO;
 import com._project.springboot_backend.REPO.Repo;
+import com._project.springboot_backend.DTO.FileRes;
 @Service
 public class Service_class {
     // 注入依赖(repo类mapper接口和文件io的接口)
