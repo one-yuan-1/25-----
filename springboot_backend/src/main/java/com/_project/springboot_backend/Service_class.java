@@ -1,42 +1,32 @@
 package com._project.springboot_backend;
 
 
-import java.sql.Connection;
-import java.sql.Statement;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.slf4j.LoggerFactory;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import com._project.springboot_backend.DTO.DtoEach_card;
 import com._project.springboot_backend.DTO.DtoRes;
 import com._project.springboot_backend.DTO.DtoUnPw;
-import com._project.springboot_backend.DTO.FileRes;
-import com._project.springboot_backend.REPO.Repo;
 import com._project.springboot_backend.REPO.FileIO;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Objects;  
-import org.apache.tika.Tika;
-import java.io.IOException;
+import com._project.springboot_backend.REPO.Repo;
 @Service
 public class Service_class {
-    //注入依赖(repo类mapper接口和文件io的接口)
+    // 注入依赖(repo类mapper接口和文件io的接口)
     private final Repo repo;
     private final FileIO fileIO;
     public Service_class(Repo repo,FileIO fileIO){
         this.repo=repo;
         this.fileIO = fileIO;
     }
+    // @Autowired
+    // private Repo repo;
+    // private FileIO fileIO;
+
 
 
     //处理登录请求
@@ -96,13 +86,16 @@ public class Service_class {
                     //传入id(字符串格式)用于寻找对应目录
                     fileIO.read_image(String.valueOf(un_id))
                 );
+                
                 //如果文件操作失败则返回错误
                 if(dtoRes.getFile_res().getCode()==0){
                     dtoRes.setCode(0);
                     dtoRes.setError_msg(dtoRes.getFile_res().getError_msg());
                 }
                 return dtoRes;
-            }else{
+            }
+            
+            else{
                 //不正确
                 dtoRes.setCode(0);
                 dtoRes.setError_msg("密码错误");
@@ -345,6 +338,20 @@ public class Service_class {
 
         
     }
+    //修改全局信息
+public DtoRes editText(String username,String telephone,String remarks,String address){
+    DtoRes dtoRes = new DtoRes();
+    // DtoGlobal_text dtoGlobal_text = new DtoGlobal_text();
+    try {
+        repo.update_global_text(username, telephone, remarks, address);
+        dtoRes.setCode(1);
+        dtoRes.setGlobal_text(repo.find_global_text(username));
+    } catch (Exception e) {
+        System.out.println("更新信息出现问题");
+    }
+return dtoRes;
+}
+
 
 
 

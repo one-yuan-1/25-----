@@ -1,0 +1,68 @@
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     background: #f5f7fa;
+     padding: 40px 20px;
+ }
+
+ .box {
+     max-width: 500px;
+     margin: 0 auto;
+     background: white;
+     padding: 30px;
+     border-radius: 12px;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+ }
+
+ .item {
+     margin-bottom: 20px;
+ }
+
+ label {
+     display: inline-block;
+     width: 80px;
+     font-size: 14px;
+     color: #333;
+ }
+
+ input {
+     width: calc(100% - 90px);
+     height: 38px;
+     padding: 0 10px;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     outline: none;
+ }
+
+ input:focus {
+     border-color: #409eff;
+ }
+
+ .btns {
+     margin-top: 25px;
+     text-align: center;
+ }
+
+ button {
+     width: 100px;
+     height: 38px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     margin: 0 8px;
+ }
+
+ #submit {
+     background: #409eff;
+     color: white;
+ }
+
+ #back {
+     background: #eee;
+     color: #333;
+ }
+
