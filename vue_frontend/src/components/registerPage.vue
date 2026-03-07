@@ -30,7 +30,7 @@
                 <input 
                 type="password"
                 id="register_password"
-                placeholder="请输入你的账号密码(6位密码)"
+                placeholder="请输入你的账号密码"
                 class="register-field"
                 />
                 
