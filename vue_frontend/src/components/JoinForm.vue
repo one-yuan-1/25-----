@@ -1,3 +1,5 @@
+<!--这是登录后显示用户主页面的组件-->
+
 <script setup lang="js">
 // 导入 Element Plus 的通知组件并别名
 //import { ElNotification as notify } from 'element-plus'
@@ -292,6 +294,24 @@ function del(){
     alert("删除失败，请重试");
   });
 }
+
+//点击view按钮来查看别人的卡片，弹出新页面，一个是随机刷一个是输名字找
+function view(){
+  let mode=prompt("请输入查看模式:1.随机查看 2.根据用户名查看");
+  //检查输入
+  if(mode!="1" && mode!="2"){
+    alert("请输入有效的查看模式");
+    return;
+  }
+  //路由跳转到新页面并且传参
+  router.push({
+    path: '/view_others',
+    query: {
+      mode: mode,
+      user: current_user.value
+    }
+  })
+}
 </script>
 
 <template>
@@ -392,6 +412,19 @@ function del(){
         </svg>
         <span>Delete</span>
       </button>
+      <!-- 查看别人卡片的按钮 --> 
+      <button class="view" @click="view">
+        <svg
+          height="24"
+          width="24"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"></path>
+        </svg>
+        <span>View</span>
+      </button>
       </el-card>
 <!-- 遍历显示卡片 --> 
       <div v-for="(value,key) in each_text" class="card" v-bind:key=key @mousemove="cards_move" @mouseleave="cards_leave">
@@ -404,6 +437,7 @@ function del(){
 
     </div>
   </div>
+
 
 
 </template>

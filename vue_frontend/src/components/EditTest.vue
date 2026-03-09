@@ -1,4 +1,4 @@
-<!-- EditText.vue -->
+<!-- 这是编辑个人文本信息的组件 -->
 <template>
   <div class="edit-text-page" style="padding: 30px; max-width: 500px; margin: 0 auto">
     <h2>编辑个人文本信息</h2>

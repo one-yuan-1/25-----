@@ -1,3 +1,5 @@
+<!--这是注册页面的组件-->
+
 <template>
     <div class="register-card">
       <div class="header_decoration">
