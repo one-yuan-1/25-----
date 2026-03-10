@@ -259,9 +259,13 @@ function del(){
   let input_id;
   input_id = prompt("请输入要删除的卡片的id");
   //处理用户取消输入或者输入空字符串
-  if(!input_id){
+  if(input_id == ''){
     alert("请输入id");
     return;
+
+  }else if(input_id == null){
+    return;
+    
   }
   //处理输入的id不是数字或者超出范围
   if(isNaN(input_id) || input_id<1 || input_id>each_text.value.length){
@@ -299,8 +303,13 @@ function del(){
 function view(){
   let mode=prompt("请输入查看模式:1.随机查看 2.根据用户名查看");
   //检查输入
-  if(mode!="1" && mode!="2"){
+  if(mode == null){
+    return;
+  }else if(mode!="1" && mode!="2"){
     alert("请输入有效的查看模式");
+    return;
+  }else if(mode == ''){
+    alert("您的输入不能为空");
     return;
   }
   //路由跳转到新页面并且传参

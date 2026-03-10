@@ -93,6 +93,7 @@ body{
 
 /*添加的按钮的样式 */ 
 .cssbuttons-io-button {
+  width: 5.5vw;
   margin-top: 1vh;
   display: flex;
   align-items: center;
@@ -101,15 +102,14 @@ body{
   font-weight: 500;
   font-size: 16px;
   padding: 0.7em 1.4em 0.7em 1.1em;
-  color: white;
-  background: #ad5389;
+  color: rgb(249, 244, 244);
   background: linear-gradient(
     0deg,
-    rgba(20, 167, 62, 1) 0%,
-    rgba(102, 247, 113, 1) 100%
+    rgb(4, 247, 105) 0%,
+    rgb(86, 236, 31) 100%
   );
   border: none;
-  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+  box-shadow: 0 0.7em 1.5em -0.5em #3df77298;
   letter-spacing: 0.05em;
   border-radius: 20em;
 }
@@ -120,6 +120,8 @@ body{
 
 .cssbuttons-io-button:hover {
   box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+  transform: translateY(5px);
+  transition: all 0.3s ease;
 }
 
 .cssbuttons-io-button:active {
@@ -127,6 +129,7 @@ body{
 }
 /*删除的按钮的样式 */ 
 .del {
+  width: 5.5vw;
   margin-top: 1vh;
   display: flex;
   align-items: center;
@@ -135,13 +138,12 @@ body{
   font-weight: 500;
   font-size: 16px;
   padding: 0.7em 1.4em 0.7em 1.1em;
-  color: rgb(202, 188, 188);
-  background: #cfc3ca;
+  color: rgb(244, 238, 238);
   background: linear-gradient(
     0deg,
-    rgb(167, 64, 20) 0%,
+    rgb(238, 88, 88) 0%,
 
-    rgb(247, 102, 102) 100%
+    rgb(247, 51, 51) 100%
   );
   border: none;
   box-shadow: 0 0.7em 1.5em -0.5em red;
@@ -152,15 +154,19 @@ del svg {
   margin-right: 6px;
 }
 
-del:hover {
+.del:hover {
   box-shadow: 0 0.5em 1.5em -0.5em red ;
+  transform: translateY(5px);
+  transition: all 0.3s ease;
+  
 }
 
-del:active {
+.del:active {
   box-shadow: 0 0.3em 1em -0.5em red ;
 }
 /*查看的按钮的样式 */
 .view {
+  width: 5.5vw;
   margin-top: 1vh;
   display: flex;
   align-items: center;
@@ -169,19 +175,22 @@ del:active {
   font-weight: 500;
   font-size: 16px;
   padding: 0.7em 1.4em 0.7em 1.1em;
-  color: rgb(202, 188, 188);
-  background: #cfc3ca;
+  color: rgb(247, 244, 244);
   background: linear-gradient(
     0deg,
-    rgb(66, 77, 193) 0%,
+    rgb(12, 235, 209) 0%,
 
-    rgb(60, 58, 139) 100%
+    rgb(14, 240, 214) 100%
   );
   border: none;
-  box-shadow: 0 0.7em 1.5em -0.5em rgb(55, 50, 134);
+  box-shadow: 0 0.7em 1.5em -0.5em rgb(224, 238, 70);
   letter-spacing: 0.05em;
   border-radius: 20em;
 } 
+.view:hover{
+  transform: translateY(5px);
+  transition: all 0.3s ease;
+}
 /*新菜单的样式*/
 .new_menu{
   /*垂直居中，弹性容器*/
