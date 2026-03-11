@@ -355,7 +355,23 @@ return dtoRes;
 }
 
 
+public DtoRes viewRandom(String user){
+    DtoRes dtoRes = new DtoRes();
+    try{
+        int id = repo.find_id(user);
+        List<DtoEach_card> text = repo.find_each_card(user);
+        FileRes poto = fileIO.read_image(String.valueOf(id));
+        dtoRes.setCode(1);
+        dtoRes.setFile_res(poto);
+        dtoRes.setLst_Each_cards(text);
 
+    }catch(Exception e){
+        System.out.println(e);
+        dtoRes.setCode(0);
+        dtoRes.setError_msg("业务繁忙");
+    }
+    return dtoRes;
+}
 
 
 

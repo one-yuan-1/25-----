@@ -70,5 +70,6 @@ public DtoRes(){}
     public void setFile_res(FileRes file_res) {
         this.file_res = file_res;
     }
+
 }
 

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import my_login from './components/myLogin.vue'
 import Join from "./components/JoinForm.vue"
 import register from "./components/registerPage.vue"
-import view_others from './components/view_others.vue'
+import view_others from './components/view_select.vue'
 
 const routes = [
   {
