@@ -1,0 +1,52 @@
+/*选择特定的卡片的显示窗口，默认在下层*/
+.select {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    z-index: -1;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/*三张卡片的样式*/
+
+.view_cards {
+    width: 22.5vh;
+    height: 30vh;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(216, 30, 30, 0.747);
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: black;
+
+    margin: 20px;
+}
+.view_cards:hover{
+  transform: translateY(-2vh);
+  transition: all 0.3s ease;
+}
+
+.last_card{
+    width: 15vh;
+    height: 20vh;
+
+}
+.next_card{
+    width: 15vh;
+    height: 20vh;
+
+}
