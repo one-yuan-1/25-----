@@ -311,15 +311,15 @@ function view(){
   }else if(mode == ''){
     alert("您的输入不能为空");
     return;
+  }else if(mode == "1"){
+    router.push('/view_random');
+  }else if(mode == "2"){
+    router.push('/view_others');
   }
-  //路由跳转到新页面并且传参
-  router.push({
-    path: '/view_others',
-    query: {
-      mode: mode,
-      user: current_user.value
-    }
-  })
+  
+  
+  
+  
 }
 </script>
 

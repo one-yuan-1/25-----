@@ -1,7 +1,7 @@
 <template>
 
-        <div class = "select">
-        <div>
+    <div class = "select">
+        <div class = "select-input">
             <div>请输入您想查看的用户</div>
             <form>
                 <input

@@ -4,6 +4,7 @@ import my_login from './components/myLogin.vue'
 import Join from "./components/JoinForm.vue"
 import register from "./components/registerPage.vue"
 import view_others from './components/view_select.vue'
+import view_random from './components/view_random.vue'
 
 const routes = [
   {
@@ -26,6 +27,10 @@ const routes = [
   {
     path: '/view_others',
     component: view_others,
+  },
+  {
+    path:'/view_random',
+    component:view_random
   }
 ]
 
