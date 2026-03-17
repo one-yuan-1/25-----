@@ -76,6 +76,17 @@ public class Controller {
 		return service.editText(username,telephone,remarks,address);
 	}
 
+	//初始化随机查看卡片
+	@PostMapping("/api/viewRandom")
+	public DtoRes viewRandom( 
+		@RequestParam("user") String user
+		
+
+	
+	){
+		return service.viewRandom(user);
+	}
+
 
 
 }
