@@ -14,12 +14,14 @@
 
         </div>
 
-        <div v-for="(value,key) in lst_Each_cards" v-bind:key=key class="view_cards">
+        <div class = "view-c">
+            <div v-for="(value,key) in lst_Each_cards" v-bind:key=key class="view_card">
             <p>{{ value.username }}</p>
             <p>{{ value.title }}</p>
             <img :src="'data:image/png;base64,' + lst_bytes[key]"  :alt="图片" class="card_img">
             <p>{{ value.text }}</p>
 
+        </div>
         </div>
 
     </div>
